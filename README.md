@@ -9,6 +9,8 @@ Bienvenue sur le référentiel All-jellyfin-media-server ! Ce référentiel cont
 
 Ce référentiel vous permet de créer votre propre serveur multimédia Jellyfin avec tous les outils nécessaires pour gérer vos films, séries TV, musiques et livres électroniques. Il comprend également des outils pour automatiser le téléchargement de nouveaux contenus et pour protéger votre vie privée en utilisant un VPN.
 
+---
+
 ### Docker
 
 Ce référentiel utilise Docker et Docker Compose pour déployer les services. Les fichiers Docker Compose se trouvent dans les répertoires with-vpn et without-vpn.
@@ -81,6 +83,8 @@ Pour utiliser Docker Compose, assurez-vous que Docker est installé sur votre sy
 <div style="text-align: center">
   <img src="https://raw.githubusercontent.com/qdm12/gluetun/master/title.svg" width="300" height="200"> <img src="https://m.media-amazon.com/images/I/31o0QB0R0sL.png" width="200" height="200">
 </div>
+
+---
 
 ## Disclaimer
 
