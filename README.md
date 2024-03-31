@@ -156,7 +156,7 @@ docker-compose down
 
 Pour mon serveur, il dispose d'une carte graphique NVIDIA GeForce 1060. Le système d'exploitation installé est Proxmox 8.1.10 basé sur Debian 12.
 
-1. Votre `/etc/apt/sources.list` devrait ressembler à ceci :
+1. Votre `/etc/apt/sources.list` devrais resembler à ca :
 
 ```bash
 deb http://ftp.debian.org/debian bookworm main contrib
