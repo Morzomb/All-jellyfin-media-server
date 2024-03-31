@@ -32,6 +32,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
 - [Prerequisites](#prerequisites)
   - [Using Docker](#docker)
   - [NVidia](#nvidia)
+  - [NordVPN](#vpn)
 - [Installation](#installation)
   - [Basic Installation](#basic-installation)
   - [Installation with NVidia](#installation-with-nvidia-only)
@@ -227,6 +228,28 @@ cd nvidia-patch
 ./patch.sh
 ```
 
+## VPN 
+
+Now we will see how to set up the VPN (Nord VPN). First, you need to connect to the Nord VPN website.
+
+1. Go to Nord VPN services :
+
+<div style="text-align: center">
+    <img src="image/vpn1.png">
+</div>
+
+2. Select manual configuration of NordVPN :
+
+<div style="text-align: center">
+    <img src="image/vpn2.png">
+</div>
+
+3. Select manual configuration of NordVPN :
+
+<div style="text-align: center">
+    <img src="image/vpn3.png">
+</div>
+
 # Installation
 
 First, clone the repository :
@@ -361,6 +384,12 @@ services:
     restart: unless-stopped
 ```
 
+To launch the installation, simply run:
+
+```bash
+docker compose -f docker-compose.yaml up -d
+```
+
 ## Installation with NVidia only :
 
 Classic installation without `VPN` but with `NVidia`:
@@ -492,6 +521,12 @@ services:
     volumes:
       - ${COMMON_PATH}/configs/jellyseerr:/app/config
     restart: unless-stopped
+```
+
+To launch the installation, simply run:
+
+```bash
+docker compose -f docker-compose-nvidia.yaml up -d
 ```
 
 ## Installation with VPN only :
@@ -632,6 +667,12 @@ services:
     volumes:
       - ${COMMON_PATH}/configs/jellyseerr:/app/config
     restart: unless-stopped
+```
+
+To launch the installation, simply run:
+
+```bash
+docker compose -f docker-compose-vpn.yaml up -d
 ```
 
 ## Installation with NVidia and VPN :
@@ -780,6 +821,12 @@ services:
     volumes:
       - ${COMMON_PATH}/configs/jellyseerr:/app/config
     restart: unless-stopped
+```
+
+To launch the installation, simply run:
+
+```bash
+docker compose -f docker-compose-nvidia-vpn.yaml up -d
 ```
 
 # Disclaimer
