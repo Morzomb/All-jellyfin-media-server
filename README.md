@@ -4,7 +4,7 @@
     <img src="image/Isyrr.png">
 </div>
 
-Bienvenue sur le Repository All-jellyfin-media-server ! Ce Repository contient tout ce dont vous avez besoin pour créer votre propre serveur multimédia Jellyfin avec Sonarr, Radarr, jellyseerr, Prowlarr, Jackett, qBittorrent et Gluetun (Nord VPN) dans un docker compose. Nous allons appeler la compilation de tous les conteneurs **Isyrr** pour que ca soit plus simple.
+Bienvenue dans le référentiel All-jellyfin-media-server ! Ce référentiel contient tout ce dont vous avez besoin pour créer votre propre serveur multimédia Jellyfin avec Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent et Gluetun (Nord VPN) dans une configuration Docker Compose. Nous désignerons la compilation de tous les conteneurs sous le nom **Isyrr** pour simplifier.
 
 ![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg)
 ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg)
@@ -16,11 +16,11 @@ Bienvenue sur le Repository All-jellyfin-media-server ! Ce Repository contient t
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=Morzomb.All-jellyfin-media-server.id)
 
 
-**Acceder au repository en [Anglais](https://github.com/Morzomb/All-jellyfin-media-server/tree/Main)**
+**Access repository in [English](https://github.com/Morzomb/All-jellyfin-media-server)**
 
 ## Table de matière :
 
-- [À quoi sert ce Isyrr ?](#à-quoi-sert-isyrr)
+- [À quoi sert Isyrr ?](#a-quoi-sert-isyrr)
   - [Jellyfin](#jellyfin)
   - [Jellyseerr](#jellyseerr)
   - [Sonarr](#sonarr)
@@ -30,29 +30,33 @@ Bienvenue sur le Repository All-jellyfin-media-server ! Ce Repository contient t
   - [QBittorrent](#qbittorrent)
   - [Gluetun avec Nord VPN](#gluetun-nordvpn)
 - [Prérequis](#prérequis)
-  - [Utilisation de Docker](#docker)
+  - [Docker](#docker)
   - [NVidia](#nvidia)
+  - [NordVPN](#vpn)
 - [Installation](#installation)
-  - [Installation Classic](#basic-installation)
-  - [Installation avec NVidia](#installation-avec-uniquement-nvidia)
-  - [Installation avec VPN](#installation-avec-uniquement-le-vpn)
-  - [Installation avec NVidia & VPN](#installation-avec-nvidia--vpn)
+  - [Basic Installation](#installation-de-base)
+  - [Installation avec NVidia](#installation-avec-nvidia-uniquement)
+  - [Installation avec VPN](#installation-avec-vpn-uniquement)
+  - [Installation avec NVidia & VPN](#installation-avec-nvidia-et-vpn)
+- [Acces aux applications](#acces-aux-applications)
+  - [Mise a jour des applications](#mise-a-jour-des-applications)
+- [Conclusion](#conclusion)
 - [Disclaimer](#Disclaimer)
 - [Creer une issues](https://github.com/Morzomb/All-jellyfin-media-server/issues)
 
-## À quoi sert Isyrr ?
+## A quoi sert Isyrr ?
 
-Ce Repository vous permet de créer votre propre serveur multimédia Jellyfin avec tous les outils nécessaires pour gérer vos films, séries TV, musiques et livres électroniques. Il comprend également des outils pour automatiser le téléchargement de nouveaux contenus et pour protéger votre vie privée en utilisant un VPN.
+Ce référentiel vous permet de créer votre propre serveur multimédia Jellyfin avec tous les outils nécessaires pour gérer vos films, séries TV, musique et livres électroniques. Il inclut également des outils pour automatiser le téléchargement de nouveaux contenus et protéger votre vie privée en utilisant un VPN.
 
-Isyrr utilise Docker et Docker Compose pour déployer les services. Les fichiers Docker Compose se trouvent dans les répertoires with-vpn et without-vpn.
+Isyrr utilise Docker et Docker Compose pour déployer les services. Les fichiers Docker Compose peuvent être trouvés dans les répertoires avec-vpn et sans-vpn.
 
-Pour utiliser Docker Compose, assurez-vous que Docker est installé sur votre système.
+Pour utiliser Docker Compose, assurez-vous d'avoir Docker installé sur votre système.
 
 ---
 
 ### Jellyfin 
 
-[Jellyfin](https://jellyfin.org/) est un logiciel de serveur multimédia open source qui vous permet de diffuser vos films, séries TV, musiques et livres électroniques sur tous vos appareils. Il est compatible avec de nombreux types de fichiers multimédias et prend en charge la diffusion en continu sur de nombreux appareils.
+[Jellyfin](https://jellyfin.org/) est un logiciel serveur multimédia open-source qui vous permet de diffuser vos films, séries TV, musique et livres électroniques sur tous vos appareils. Il est compatible avec de nombreux types de fichiers multimédias et prend en charge la diffusion vers de nombreux appareils.
 
 <div style="text-align: center">
     <img src="https://jellyfin.org/images/logo.svg" width="300" height="100">
@@ -60,7 +64,7 @@ Pour utiliser Docker Compose, assurez-vous que Docker est installé sur votre sy
 
 ### Jellyseerr
 
-Jellyseerr is an open-source application that allows you to automate the management of your Jellyfin media server. It works by monitoring your Jellyfin library and automatically searching for and downloading new content based on your preferences. Jellyseerr supports integration with various other tools, such as Sonarr and Radarr, to provide a seamless experience for managing your media collection.
+[Jellyseerr](https://github.com/Fallenbagel/jellyseerr) est une application open-source qui vous permet d'automatiser la gestion de votre serveur multimédia Jellyfin. Il fonctionne en surveillant votre bibliothèque Jellyfin et en recherchant et téléchargeant automatiquement de nouveaux contenus en fonction de vos préférences. Jellyseerr prend en charge l'intégration avec divers autres outils, tels que Sonarr et Radarr, pour offrir une expérience fluide de gestion de votre collection multimédia.
 
 <div style="text-align: center"> 
     <img src="https://raw.githubusercontent.com/Fallenbagel/jellyseerr/develop/public/logo_full.svg" width="300" height="100"> 
@@ -68,7 +72,7 @@ Jellyseerr is an open-source application that allows you to automate the managem
 
 ### Sonarr :
 
-[Sonarr](https://sonarr.tv/) est un logiciel de gestion de séries TV qui vous permet de rechercher, télécharger et gérer automatiquement vos séries TV préférées. Il fonctionne avec de nombreux types de trackers et de clients torrent et prend en charge la recherche automatique de sous-titres.
+[Sonarr](https://sonarr.tv/) est un logiciel de gestion de séries TV qui vous permet de rechercher, télécharger et gérer vos séries TV préférées automatiquement. Il fonctionne avec de nombreux types de trackers et clients torrent et prend en charge le téléchargement automatique de sous-titres.
 
 
 <div style="text-align: center">
@@ -77,7 +81,7 @@ Jellyseerr is an open-source application that allows you to automate the managem
 
 ### Radarr :
 
-[Radarr](https://radarr.video/) est un logiciel de gestion de films qui vous permet de rechercher, télécharger et gérer automatiquement vos films préférés. Il fonctionne avec de nombreux types de trackers et de clients torrent et prend en charge la recherche automatique de sous-titres.
+[Radarr](https://radarr.video/) est un logiciel de gestion de films qui vous permet de rechercher, télécharger et gérer vos films préférés automatiquement. Il fonctionne avec de nombreux types de trackers et clients torrent et prend en charge le téléchargement automatique de sous-titres.
 
 <div style="text-align: center">
     <img src="https://warlord0blog.files.wordpress.com/2022/01/radarr_logo-1.png" width="300" height="100">
@@ -85,7 +89,7 @@ Jellyseerr is an open-source application that allows you to automate the managem
 
 ### Jackett :
 
-[Jackett](https://github.com/Jackett/Jackett) est un logiciel de proxy pour les trackers torrent qui vous permet de rechercher des fichiers torrent sur de nombreux trackers à partir d'un seul endroit. Il fonctionne avec de nombreux types de clients torrent et prend en charge l'authentification et la recherche avancée.
+[Jackett](https://github.com/Jackett/Jackett) est un logiciel proxy pour les trackers torrent qui vous permet de rechercher des fichiers torrent sur de nombreux trackers depuis un seul endroit. Il fonctionne avec de nombreux types de clients torrent et prend en charge l'authentification et la recherche avancée.
 
 <div style="text-align: center">
     <img src="https://avatars.githubusercontent.com/u/15383019?s=280&v=4" width="100" height="100">
@@ -93,7 +97,7 @@ Jellyseerr is an open-source application that allows you to automate the managem
 
 ### Flaresolverr
 
-[Flaresolverr](https://github.com/FlareSolverr/FlareSolverr) est un logiciel open source qui vous permet de contourner les restrictions de streaming sur les sites de partage de vidéos. Il fonctionne en résolvant les liens de streaming et en contournant les blocages géographiques et les restrictions de lecture.
+[Flaresolverr](https://github.com/FlareSolverr/FlareSolverr) est un logiciel open-source qui vous permet de contourner les restrictions de diffusion sur les sites de partage vidéo. Il fonctionne en résolvant les liens de diffusion et en contournant les blocages géographiques et les restrictions de lecture.
 
 <div style="text-align: center">
     <img src="https://avatars.githubusercontent.com/u/75936191?v=4" width="200" height="200">
@@ -101,7 +105,7 @@ Jellyseerr is an open-source application that allows you to automate the managem
 
 ### Prowlarr :
 
-[Prowlarr](https://github.com/Prowlarr/Prowlarr) est un logiciel de gestion de téléchargements qui vous permet de rechercher et de télécharger automatiquement des fichiers à partir de nombreux types de sources, y compris les trackers torrent, les newsgroups et les sites de téléchargement direct.
+[Prowlarr](https://github.com/Prowlarr/Prowlarr) est un logiciel de gestion de téléchargement qui vous permet de rechercher et de télécharger automatiquement des fichiers à partir de nombreux types de sources, y compris les trackers torrent, les groupes de discussion et les sites de téléchargement direct.
 
 <div style="text-align: center">
     <img src="https://prowlarr.com/logo/128.png" width="100" height="100">
@@ -109,7 +113,7 @@ Jellyseerr is an open-source application that allows you to automate the managem
 
 ### qBittorrent
 
-[qBittorrent](https://www.qbittorrent.org/) est un client BitTorrent open source qui vous permet de télécharger des fichiers torrent. Il est léger, facile à utiliser et prend en charge de nombreuses fonctionnalités avancées telles que la recherche intégrée de torrents, le chiffrement, la création de torrents et la prise en charge de trackers privés.
+[qBittorrent](https://www.qbittorrent.org/) est un logiciel client BitTorrent open-source qui vous permet de télécharger des fichiers torrent. Il est léger, facile à utiliser et prend en charge de nombreuses fonctionnalités avancées telles que la recherche de torrent intégrée, le chiffrement, la création de torrent et la prise en charge des trackers privés.
 
 <div style="text-align: center">
     <img src="https://a.fsdn.com/allura/p/qbittorrent/icon?1518743661?&w=90" width="100" height="100">
@@ -117,7 +121,7 @@ Jellyseerr is an open-source application that allows you to automate the managem
 
 ### Gluetun (NordVPN)
 
-[Gluetun](https://github.com/qdm12/gluetun) est un client VPN open source qui vous permet de vous connecter aux serveurs NordVPN. Il est facile à utiliser et prend en charge de nombreuses fonctionnalités avancées telles que la redirection de port, la protection contre les fuites DNS et la prise en charge de plusieurs protocoles VPN.
+[Gluetun](https://github.com/qdm12/gluetun) est un logiciel client VPN open-source qui vous permet de vous connecter aux serveurs NordVPN. Il est facile à utiliser et prend en charge de nombreuses fonctionnalités avancées telles que le transfert de port, la protection contre les fuites DNS et la prise en charge de plusieurs protocoles VPN.
 
 <div style="text-align: center">
   <img src="https://raw.githubusercontent.com/qdm12/gluetun/master/title.svg" width="300" height="200"> <img src="https://m.media-amazon.com/images/I/31o0QB0R0sL.png" width="200" height="200">
@@ -125,7 +129,7 @@ Jellyseerr is an open-source application that allows you to automate the managem
 
 ---
 
-# Prérequis 
+# Prérequis
 
 ## Docker
 
@@ -137,12 +141,12 @@ sh get-docker.sh
 
 ### Utilisation de Docker Compose
 
-Pour utiliser Docker Compose avec ce référentiel, vous devez d'abord choisir si vous souhaitez utiliser la version avec VPN ou sans VPN. Ensuite, accédez au répertoire correspondant (with-vpn ou without-vpn) et exécutez la commande suivante :
+Pour utiliser Docker Compose avec ce référentiel, vous devez d'abord choisir si vous souhaitez utiliser la version avec VPN ou sans VPN. Ensuite, accédez au répertoire correspondant (avec-vpn ou sans-vpn) et exécutez la commande suivante :
 
 ```bash
 docker-compose up -d
 ```
-Pour éteindre la stack :
+Pour arrêter la stack :
 
 ```bash
 docker-compose down
@@ -150,9 +154,9 @@ docker-compose down
 
 ## NVIDIA
 
-Pour ma part mon serveur dispose d'un carte Graphique Nvidia GForce 1060. L'os installer est un promox 8.1.10 basée sur debian 12.
+Pour mon serveur, il dispose d'une carte graphique NVIDIA GeForce 1060. Le système d'exploitation installé est Proxmox 8.1.10 basé sur Debian 12.
 
-1. Your `/etc/apt/sources.list` should look like this:
+1. Votre `/etc/apt/sources.list` devrait ressembler à ceci :
 
 ```bash
 deb http://ftp.debian.org/debian bookworm main contrib
@@ -166,33 +170,34 @@ deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription
 deb http://security.debian.org/debian-security bookworm-security main contrib
 
 # Debian Bookworm
-# Ajouter cette ligne 
+### Ajoutez cette ligne
 deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
 ```
 
-2. Mise à jour des dépots :
+2. Mettez à jour les dépôts :
 ```bash
 apt update
 ```
-3. Installation des mises à jours :
+3. Installez les mises à jour :
 ```bash
 apt upgrade
 ```
-4. Installation des drivers NVidia : 
+4. Installez les pilotes NVIDIA :
 
-Seulement pour un environement promox :
+Uniquement pour l'environnement Proxmox :
 
 ```bash
 apt install pve-headers
 ```
 Ensuite :
+
 ```bash
 apt install libnvidia-cfg1 nvidia-kernel-source nvidia-kernel-common nvidia-driver 
 ```
 
-6. Reboot
+5. Redémarrez la machine
 
-7. Ensuite entrer **nvidia-smi** qui devrai afficher :
+6. Ensuite, entrez **nvidia-smi** qui devrait afficher :
 
 ```
 root@pve:~#nvidia-smi
@@ -217,7 +222,7 @@ root@pve:~#nvidia-smi
 +-----------------------------------------------------------------------------+
 ```
 
-Il peut y avoir des erreurs lors de l'installation il est préférable d'utiliser  nvidia-patch :
+Il peut y avoir des erreurs pendant l'installation ; il est préférable d'utiliser nvidia-patch :
 
 ```bash
 git clone https://github.com/keylase/nvidia-patch.git
@@ -226,18 +231,40 @@ cd nvidia-patch
 ./patch.sh
 ```
 
+## VPN 
+
+Maintenant, nous allons voir comment configurer le VPN (Nord VPN). Tout d'abord, vous devez vous connecter au site Web de Nord VPN.
+
+1. Go to Nord VPN services :
+
+<div style="text-align: center">
+    <img src="image/vpn1.png">
+</div>
+
+2. Sélectionnez la configuration manuelle de NordVPN :
+
+<div style="text-align: center">
+    <img src="image/vpn2.png">
+</div>
+
+3. Vous trouverez les logins et mots de passe pour le conteneurs gluetun :
+
+<div style="text-align: center">
+    <img src="image/vpn3.png">
+</div>
+
 # Installation
 
-Tout d'abords il faut clonner le repository  :
+Tout d'abord, clonez le référentiel :
 
 ```bash
 git clone -b fr https://github.com/Morzomb/All-jellyfin-media-server.git
 cd All-jellyfin-media-server/
 ```
 
-## Basic Installation :
+## Installation de base :
 
-Installation classic sans `VPN` et sans `NVidia` :
+Installation classique sans `VPN` et sans `NVidia` :
 
 ```yaml
 ---
@@ -360,9 +387,15 @@ services:
     restart: unless-stopped
 ```
 
-## Installation avec uniquement NVidia :
+Pour lancer l'installation, exécutez simplement :
 
-Installation classic sans `VPN` mais avec `NVidia` :
+```bash
+docker compose -f docker-compose.yaml up -d
+```
+
+## Installation avec NVidia uniquement :
+
+Installation classique sans `VPN` mais avec `NVidia` :
 
 ```yaml
 ---
@@ -493,9 +526,15 @@ services:
     restart: unless-stopped
 ```
 
-## Installation avec uniquement le VPN :
+Pour lancer l'installation, exécutez simplement :
 
-Installation classic avec `VPN` mais sans `NVidia` :
+```bash
+docker compose -f docker-compose-nvidia.yaml up -d
+```
+
+## Installation avec VPN uniquement :
+
+Installation classique avec `VPN` mais sans `NVidia` :
 
 ```yaml
 ---
@@ -633,9 +672,15 @@ services:
     restart: unless-stopped
 ```
 
-## Installation avec NVidia & VPN :
+Pour lancer l'installation, exécutez simplement :
 
-Installation classic avec `VPN` mais avec `NVidia` :
+```bash
+docker compose -f docker-compose-vpn.yaml up -d
+```
+
+## Installation avec NVidia et VPN :
+
+Installation classique avec `VPN` et `NVidia` :
 
 ```yaml
 ---
@@ -781,6 +826,40 @@ services:
     restart: unless-stopped
 ```
 
-# Disclaimer
+Pour lancer l'installation, exécutez simplement :
 
-Ce code est fourni à des fins informatives uniquement et ne doit pas être utilisé à des fins illégales. Je ne suis pas responsable des actions effectuées par les utilisateurs de ce code. Ce code a pour but informatif et si les personnes souhaitent l'utiliser, elles doivent se renseigner auprès des lois de leurs pays.
+```bash
+docker compose -f docker-compose-nvidia-vpn.yaml up -d
+```
+
+# Acces aux applications
+
+Une fois les applications déployées, vous pouvez y accéder en utilisant les adresses suivantes :
+
+* Jellyfin : http://localhost:8096
+* Sonarr : http://localhost:8989
+* Radarr : http://localhost:7878
+* Jackett : http://localhost:9117
+* Prowlarr : http://localhost:9696
+* qBittorrent : http://localhost:8080
+
+Gluetun (Nord VPN) sera automatiquement configuré pour être utilisé avec les applications.
+
+## Mise a jour des applications
+
+Pour mettre à jour les applications, vous devez arrêter les conteneurs en cours d'exécution et supprimer les images Docker existantes. Vous pouvez utiliser les commandes suivantes pour effectuer ces opérations :
+
+```bash
+docker-compose down
+docker image prune -a
+```
+
+Ensuite, vous pouvez exécuter `docker-compose up -d` pour redémarrer les conteneurs avec les dernières versions des applications.
+
+# Conclusion
+
+Ce référentiel contient tout ce dont vous avez besoin pour déployer vos propres applications multimédias avec Docker. En utilisant Docker Compose, vous pouvez facilement gérer les conteneurs pour toutes les applications et les mettre à jour en toute simplicité.
+
+# Clause de non-responsabilité
+
+Ce code est fourni à des fins d'information seulement et ne doit pas être utilisé à des fins illégales. Je ne suis pas responsable des actions effectuées par les utilisateurs de ce code. Ce code est à des fins d'information, et si les gens souhaitent l'utiliser, ils devraient consulter les lois de leurs pays.
