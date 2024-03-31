@@ -1,31 +1,31 @@
 # Code of Conduct
 
-Nous voulons que ce projet soit un espace accueillant et inclusif pour tous les contributeurs. Par conséquent, nous avons adopté ce code de conduite pour garantir que tous les participants se sentent en sécurité et respectés.
+We want this project to be a welcoming and inclusive space for all contributors. Therefore, we have adopted this code of conduct to ensure that all participants feel safe and respected.
 
 ## Comportement attendu
 
-* Traitez tout le monde avec respect et kindness.
-* Soyez patient et tolérant envers les autres, en particulier ceux qui peuvent avoir des opinions différentes des vôtres.
-* Soyez ouvert à la collaboration et à la contribution des autres.
-* Soyez constructif dans vos commentaires et vos critiques.
-* Soyez responsable de vos actions et de vos paroles.
+* Treat everyone with respect and kindness.
+* Be patient and tolerant towards others, especially those who may have different opinions from yours.
+* Be open to collaboration and contribution from others.
+* Be constructive in your feedback and criticism.
+* Be responsible for your actions and words.
 
 ## Comportement inacceptable
 
-* Les commentaires ou les comportements discriminatoires ou harcelants, y compris ceux fondés sur la race, le sexe, l'orientation sexuelle, l'identité de genre, l'âge, la religion, la nationalité ou le handicap, ne seront pas tolérés.
-* Les commentaires ou les comportements menaçants, violents ou agressifs ne seront pas tolérés.
-* Les spams, les publicités non sollicitées ou les activités illégales ne seront pas tolérés.
+* Discriminatory or harassing comments or behavior, including those based on race, gender, sexual orientation, gender identity, age, religion, nationality, or disability, will not be tolerated.
+* Threatening, violent, or aggressive comments or behavior will not be tolerated.
+* Spam, unsolicited advertising, or illegal activities will not be tolerated.
 
-## Conséquences
+## Consequences
 
-Toute personne qui ne respecte pas ce code de conduite peut être exclue du projet à la discrétion des administrateurs du projet.
+Anyone who violates this code of conduct may be excluded from the project at the discretion of the project administrators.
 
-## Signaler un incident
+## Reporting an Incident
 
-Si vous êtes témoin ou victime d'un comportement inacceptable, veuillez contacter les administrateurs du projet en envoyant un e-mail à [adresse e-mail du projet].
+If you witness or are the victim of unacceptable behavior, please contact the project administrators by sending an email to [project email address].
 
-Nous prenons toutes les plaintes au sérieux et nous nous engageons à enquêter sur toutes les allégations de comportement inacceptable.
+We take all complaints seriously and are committed to investigating all allegations of unacceptable behavior.
 
 ## Attribution
 
-Ce code de conduite est adapté du Contributor Covenant, version 1.4, disponible à l'adresse https://www.contributor-covenant.org/version/1/4/code-of-conduct.html.
+This code of conduct is adapted from the Contributor Covenant, version 1.4, available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html.
