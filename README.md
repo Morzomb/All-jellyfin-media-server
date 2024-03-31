@@ -856,10 +856,6 @@ docker image prune -a
 
 Ensuite, vous pouvez exécuter `docker-compose up -d` pour redémarrer les conteneurs avec les dernières versions des applications.
 
-# Conclusion
-
-Ce référentiel contient tout ce dont vous avez besoin pour déployer vos propres applications multimédias avec Docker. En utilisant Docker Compose, vous pouvez facilement gérer les conteneurs pour toutes les applications et les mettre à jour en toute simplicité.
-
 # Clause de non-responsabilité
 
 Ce code est fourni à des fins d'information seulement et ne doit pas être utilisé à des fins illégales. Je ne suis pas responsable des actions effectuées par les utilisateurs de ce code. Ce code est à des fins d'information, et si les gens souhaitent l'utiliser, ils devraient consulter les lois de leurs pays.
