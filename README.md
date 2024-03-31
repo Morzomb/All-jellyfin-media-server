@@ -232,7 +232,7 @@ cd nvidia-patch
 First, clone the repository :
 
 ```bash
-git clone -b fr https://github.com/Morzomb/All-jellyfin-media-server.git
+git clone https://github.com/Morzomb/All-jellyfin-media-server.git
 cd All-jellyfin-media-server/
 ```
 
