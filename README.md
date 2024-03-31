@@ -152,7 +152,7 @@ docker-compose down
 
 Pour ma part mon serveur dispose d'un carte Graphique Nvidia GForce 1060. L'os installer est un promox 8.1.10 basée sur debian 12.
 
-1. Your `/etc/apt/sources.list` should look like this:
+1. Votre `/etc/apt/sources.list` devrais resembler à ca :
 
 ```bash
 deb http://ftp.debian.org/debian bookworm main contrib
