@@ -6,7 +6,15 @@
 
 Bienvenue sur le Repository All-jellyfin-media-server ! Ce Repository contient tout ce dont vous avez besoin pour créer votre propre serveur multimédia Jellyfin avec Sonarr, Radarr, jellyseerr, Prowlarr, Jackett, qBittorrent et Gluetun (Nord VPN) dans un docker compose. Nous allons appeler la compilation de tous les conteneurs **Isyrr** pour que ca soit plus simple.
 
-![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/tag/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/release/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/issues/Morzomb/All-jellyfin-media-server.svg)[![GitHub last commit](https://img.shields.io/github/last-commit/Morzomb/All-jellyfin-media-server.svg)](https://github.com/Morzomb/gluetun/commits/master)![GitHub repo size](https://img.shields.io/github/repo-size/Morzomb/All-jellyfin-media-server)![visitors](https://visitor-badge.laobi.icu/badge?page_id=Morzomb.All-jellyfin-media-server.id)
+![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg)
+![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg)
+![](https://img.shields.io/github/tag/Morzomb/All-jellyfin-media-server.svg)
+![](https://img.shields.io/github/release/Morzomb/All-jellyfin-media-server.svg) 
+![](https://img.shields.io/github/issues/Morzomb/All-jellyfin-media-server.svg)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Morzomb/All-jellyfin-media-server.svg)](https://github.com/Morzomb/All-jellyfin-media-server/commits/master)
+![GitHub repo size](https://img.shields.io/github/repo-size/Morzomb/All-jellyfin-media-server)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=Morzomb.All-jellyfin-media-server.id)
+
 
 **Acceder au repository en [Anglais](https://github.com/Morzomb/All-jellyfin-media-server/tree/Main)**
 
