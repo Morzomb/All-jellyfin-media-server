@@ -1,19 +1,18 @@
 # All-jellyfin-media-server
 
 <div style="text-align: center">
-    <img src="image/ISIRR.png">
+    <img src="image/Isyrr.png">
 </div>
 
-Bienvenue sur le Repository All-jellyfin-media-server ! Ce Repository contient tout ce dont vous avez besoin pour créer votre propre serveur multimédia Jellyfin avec Sonarr, Radarr, jellyseerr, Prowlarr, Jackett, qBittorrent et Gluetun (Nord VPN) dans un docker compose. Nous allons appeler la compilation de tous les conteneurs comme serveur ISIRR pour que ca soit plus simple.
+Bienvenue sur le Repository All-jellyfin-media-server ! Ce Repository contient tout ce dont vous avez besoin pour créer votre propre serveur multimédia Jellyfin avec Sonarr, Radarr, jellyseerr, Prowlarr, Jackett, qBittorrent et Gluetun (Nord VPN) dans un docker compose. Nous allons appeler la compilation de tous les conteneurs **Isyrr** pour que ca soit plus simple.
 
-![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/tag/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/release/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/issues/Morzomb/All-jellyfin-media-server.svg)
+![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/tag/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/release/Morzomb/All-jellyfin-media-server.svg) ![](https://img.shields.io/github/issues/Morzomb/All-jellyfin-media-server.svg)[![GitHub last commit](https://img.shields.io/github/last-commit/Morzomb/All-jellyfin-media-server.svg)](https://github.com/Morzomb/gluetun/commits/master)![GitHub repo size](https://img.shields.io/github/repo-size/Morzomb/All-jellyfin-media-server)![visitors](https://visitor-badge.laobi.icu/badge?page_id=Morzomb.All-jellyfin-media-server.id)
 
 **Acceder au repository en [Anglais](https://github.com/Morzomb/All-jellyfin-media-server/tree/Main)**
 
 ## Table de matière :
 
-- [À quoi sert ce Serveur](#À-quoi-sert-ce-Serveur)
-  - [Docker](#docker)
+- [À quoi sert ce Isyrr ?](#à-quoi-sert-isyrr)
   - [Jellyfin](#jellyfin)
   - [Jellyseerr](#jellyseerr)
   - [Sonarr](#sonarr)
@@ -25,16 +24,19 @@ Bienvenue sur le Repository All-jellyfin-media-server ! Ce Repository contient t
 - [Prérequis](#prérequis)
   - [Utilisation de Docker](#docker)
   - [NVidia](#nvidia)
+- [Installation](#installation)
+  - [Installation Classic](#basic-installation)
+  - [Installation avec NVidia](#installation-avec-uniquement-nvidia)
+  - [Installation avec VPN](#installation-avec-uniquement-le-vpn)
+  - [Installation avec NVidia & VPN](#installation-avec-nvidia--vpn)
 - [Disclaimer](#Disclaimer)
-- Un Problème ?
-  - [Creer un ticket](https://github.com/Morzomb/All-jellyfin-media-server/issues)
+- [Creer une issues](https://github.com/Morzomb/All-jellyfin-media-server/issues)
 
+## À quoi sert Isyrr ?
 
-## À quoi sert ISIRR ?
+Ce Repository vous permet de créer votre propre serveur multimédia Jellyfin avec tous les outils nécessaires pour gérer vos films, séries TV, musiques et livres électroniques. Il comprend également des outils pour automatiser le téléchargement de nouveaux contenus et pour protéger votre vie privée en utilisant un VPN.
 
-ISIRR vous permet de créer votre propre serveur multimédia Jellyfin avec tous les outils nécessaires pour gérer vos films, séries TV, musiques et livres électroniques. Il comprend également des outils pour automatiser le téléchargement de nouveaux contenus et pour protéger votre vie privée en utilisant un VPN.
-
-ISIRR utilise Docker et Docker Compose pour déployer les services. Les fichiers Docker Compose se trouvent dans les répertoires with-vpn et without-vpn.
+Isyrr utilise Docker et Docker Compose pour déployer les services. Les fichiers Docker Compose se trouvent dans les répertoires with-vpn et without-vpn.
 
 Pour utiliser Docker Compose, assurez-vous que Docker est installé sur votre système.
 
@@ -182,9 +184,10 @@ apt install libnvidia-cfg1 nvidia-kernel-source nvidia-kernel-common nvidia-driv
 
 6. Reboot
 
-7. `nvidia-smi` devrai afficher ca :
+7. Ensuite entrer **nvidia-smi** qui devrai afficher :
 
 ```
+root@pve:~#nvidia-smi
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 525.147.05   Driver Version: 525.147.05   CUDA Version: 12.0     |
 |-------------------------------+----------------------+----------------------+
@@ -208,11 +211,566 @@ apt install libnvidia-cfg1 nvidia-kernel-source nvidia-kernel-common nvidia-driv
 
 Il peut y avoir des erreurs lors de l'installation il est préférable d'utiliser  nvidia-patch :
 
-```
+```bash
 git clone https://github.com/keylase/nvidia-patch.git
 
 cd nvidia-patch
 ./patch.sh
+```
+
+# Installation
+
+Tout d'abords il faut clonner le repository  :
+
+```bash
+git clone -b fr https://github.com/Morzomb/All-jellyfin-media-server.git
+cd All-jellyfin-media-server/
+```
+
+## Basic Installation :
+
+Installation classic sans `VPN` et sans `NVidia` :
+
+```yaml
+---
+version: "3.3"
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - WEBUI_PORT=8080
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/qbittorrent:/config
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}/configs/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}/configs/jackett:/config
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/sonarr:/config
+      - ${COMMON_PATH}/sonarr/tv:/tv
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/radarr:/config
+      - ${COMMON_PATH}/radarr/movies:/movies
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - 8096:8096
+      - 8920:8920
+      - 7359:7359/udp
+      - 1900:1900/udp
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/jellyfin:/config
+      - ${COMMON_PATH}/jellyfin/cache:/cache
+      - ${COMMON_PATH}/sonarr/tv:/data/tvshows
+      - ${COMMON_PATH}/radarr/movies:/data/movies
+      - ${COMMON_PATH}/qbittorrent/downloads:/data/media_downloads
+    restart: unless-stopped
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ}
+    ports:
+      - 5055:5055
+    volumes:
+      - ${COMMON_PATH}/configs/jellyseerr:/app/config
+    restart: unless-stopped
+```
+
+## Installation avec uniquement NVidia :
+
+Installation classic sans `VPN` mais avec `NVidia` :
+
+```yaml
+---
+version: "3.3"
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - WEBUI_PORT=8080
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/qbittorrent:/config
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}/configs/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}/configs/jackett:/config
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/sonarr:/config
+      - ${COMMON_PATH}/sonarr/tv:/tv
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/radarr:/config
+      - ${COMMON_PATH}/radarr/movies:/movies
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - 8096:8096
+      - 8920:8920
+      - 7359:7359/udp
+      - 1900:1900/udp
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/jellyfin:/config
+      - ${COMMON_PATH}/jellyfin/cache:/cache
+      - ${COMMON_PATH}/sonarr/tv:/data/tvshows
+      - ${COMMON_PATH}/radarr/movies:/data/movies
+      - ${COMMON_PATH}/qbittorrent/downloads:/data/media_downloads
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ}
+    ports:
+      - 5055:5055
+    volumes:
+      - ${COMMON_PATH}/configs/jellyseerr:/app/config
+    restart: unless-stopped
+```
+
+## Installation avec uniquement le VPN :
+
+Installation classic avec `VPN` mais sans `NVidia` :
+
+```yaml
+---
+version: "3.3"
+services:
+  nordvpn:
+    container_name: GlueTun-VPN
+    image: qmcgaw/gluetun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8080:8080
+      - 51420:51420
+      - 51420:51420/udp
+    environment:
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - SERVER_REGIONS=Belgium
+      - VPN_TYPE=openvpn
+    restart: always
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    network_mode: service:nordvpn
+    container_name: qbittorrent
+    depends_on:
+      - nordvpn
+    environment:
+      - WEBUI_PORT=8080
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/qbittorrent:/config
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    restart: unless-stopped
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}/configs/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}/configs/jackett:/config
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/sonarr:/config
+      - ${COMMON_PATH}/sonarr/tv:/tv
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/radarr:/config
+      - ${COMMON_PATH}/radarr/movies:/movies
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - 8096:8096
+      - 8920:8920
+      - 7359:7359/udp
+      - 1900:1900/udp
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/jellyfin:/config
+      - ${COMMON_PATH}/jellyfin/cache:/cache
+      - ${COMMON_PATH}/sonarr/tv:/data/tvshows
+      - ${COMMON_PATH}/radarr/movies:/data/movies
+      - ${COMMON_PATH}/qbittorrent/downloads:/data/media_downloads
+    restart: unless-stopped
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ}
+    ports:
+      - 5055:5055
+    volumes:
+      - ${COMMON_PATH}/configs/jellyseerr:/app/config
+    restart: unless-stopped
+```
+
+## Installation avec NVidia & VPN :
+
+Installation classic avec `VPN` mais avec `NVidia` :
+
+```yaml
+---
+version: "3.3"
+services:
+  nordvpn:
+    container_name: GlueTun-VPN
+    image: qmcgaw/gluetun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8080:8080
+      - 51420:51420
+      - 51420:51420/udp
+    environment:
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - SERVER_REGIONS=Belgium
+      - VPN_TYPE=openvpn
+    restart: always
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    network_mode: service:nordvpn
+    container_name: qbittorrent
+    depends_on:
+      - nordvpn
+    environment:
+      - WEBUI_PORT=8080
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/qbittorrent:/config
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    restart: unless-stopped
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}/configs/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}/configs/jackett:/config
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/sonarr:/config
+      - ${COMMON_PATH}/sonarr/tv:/tv
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/radarr:/config
+      - ${COMMON_PATH}/radarr/movies:/movies
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - 8096:8096
+      - 8920:8920
+      - 7359:7359/udp
+      - 1900:1900/udp
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/jellyfin:/config
+      - ${COMMON_PATH}/jellyfin/cache:/cache
+      - ${COMMON_PATH}/sonarr/tv:/data/tvshows
+      - ${COMMON_PATH}/radarr/movies:/data/movies
+      - ${COMMON_PATH}/qbittorrent/downloads:/data/media_downloads
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ}
+    ports:
+      - 5055:5055
+    volumes:
+      - ${COMMON_PATH}/configs/jellyseerr:/app/config
+    restart: unless-stopped
 ```
 
 # Disclaimer
