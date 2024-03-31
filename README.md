@@ -28,7 +28,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [Jackett](#jackett)
   - [Flaresolverr](#flaresolverr)
   - [QBittorrent](#qbittorrent)
-  - [Gluetun avec Nord VPN](#gluetun-nordvpn)
+  - [Gluetun with Nord VPN](#gluetun-nordvpn)
 - [Prerequisites](#prerequisites)
   - [Using Docker](#docker)
   - [NVidia](#nvidia)
@@ -38,8 +38,10 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [Installation with NVidia](#installation-with-nvidia-only)
   - [Installation with VPN](#installation-with-vpn-only)
   - [Installation with NVidia & VPN](#installation-with-nvidia-and-vpn)
+- [Accessing Applications](#accessing-applications)
+  - [Updating Applications](#updating-applications)
 - [Disclaimer](#Disclaimer)
-- [Creer une issues](https://github.com/Morzomb/All-jellyfin-media-server/issues)
+- [Create issues](https://github.com/Morzomb/All-jellyfin-media-server/issues)
 
 ## What is Isyrr for?
 
@@ -244,7 +246,7 @@ Now we will see how to set up the VPN (Nord VPN). First, you need to connect to 
     <img src="image/vpn2.png">
 </div>
 
-3. Select manual configuration of NordVPN :
+3. You can now take your login and password for the gluetun container :
 
 <div style="text-align: center">
     <img src="image/vpn3.png">
@@ -384,7 +386,7 @@ services:
     restart: unless-stopped
 ```
 
-To launch the installation, simply run:
+To launch the installation, simply run :
 
 ```bash
 docker compose -f docker-compose.yaml up -d
@@ -523,7 +525,7 @@ services:
     restart: unless-stopped
 ```
 
-To launch the installation, simply run:
+To launch the installation, simply run :
 
 ```bash
 docker compose -f docker-compose-nvidia.yaml up -d
@@ -669,7 +671,7 @@ services:
     restart: unless-stopped
 ```
 
-To launch the installation, simply run:
+To launch the installation, simply run :
 
 ```bash
 docker compose -f docker-compose-vpn.yaml up -d
@@ -823,11 +825,36 @@ services:
     restart: unless-stopped
 ```
 
-To launch the installation, simply run:
+To launch the installation, simply run :
 
 ```bash
 docker compose -f docker-compose-nvidia-vpn.yaml up -d
 ```
+
+# Accessing Applications
+
+Once the applications are deployed, you can access them using the following addresses :
+
+* Jellyfin : http://localhost:8096
+* Sonarr : http://localhost:8989
+* Radarr : http://localhost:7878
+* Jackett : http://localhost:9117
+* Prowlarr : http://localhost:9696
+* qBittorrent : http://localhost:8080
+
+Gluetun (Nord VPN) will be automatically configured to be used with the applications.
+
+## Updating Applications
+
+To update the applications, you need to stop the running containers and remove the existing Docker images. You can use the following commands to perform these operations:
+
+```bash
+docker-compose down
+docker image prune -a
+```
+
+Then, you can run `docker-compose up -d` to restart the containers with the latest versions of the applications.
+
 
 # Disclaimer
 
