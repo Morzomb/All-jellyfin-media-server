@@ -153,7 +153,7 @@ docker-compose down
 
 ## NVIDIA
 
-For my server, it has an NVIDIA GeForce 1060 Graphics Card. The installed OS is Proxmox 8.1.10 based on Debian 12.
+For my server, it has an NVIDIA GeForce 1060 Graphics Card. The installed OS is Proxmox 8.1.10 based on Debian 12. If you need to check [compatibility.](https://developer.nvidia.com/video-encode-and-decode-gpu-support-matrix-new)
 
 1. Your `/etc/apt/sources.list` should look like this:
 
@@ -171,6 +171,14 @@ deb http://security.debian.org/debian-security bookworm-security main contrib
 # Debian Bookworm
 ### Add this line
 deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
+```
+And : 
+
+```bash
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 ```
 
 2. Update repositories :
@@ -191,7 +199,9 @@ apt install pve-headers
 Then :
 
 ```bash
-apt install libnvidia-cfg1 nvidia-kernel-source nvidia-kernel-common nvidia-driver 
+apt install libnvidia-cfg1 nvidia-kernel-source nvidia-kernel-common nvidia-driver nvidia-container-toolkit
+
+nvidia-ctk runtime configure --runtime=docker
 ```
 
 5. Reboot
