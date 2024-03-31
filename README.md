@@ -40,7 +40,6 @@ Bienvenue dans le référentiel All-jellyfin-media-server ! Ce référentiel con
   - [Installation avec NVidia & VPN](#installation-avec-nvidia-et-vpn)
 - [Acces aux applications](#acces-aux-applications)
   - [Mise a jour des applications](#mise-a-jour-des-applications)
-- [Conclusion](#conclusion)
 - [Disclaimer](#Disclaimer)
 - [Creer une issues](https://github.com/Morzomb/All-jellyfin-media-server/issues)
 
