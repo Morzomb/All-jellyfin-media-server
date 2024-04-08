@@ -18,7 +18,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
 
 **Acceder au repository en [Français](https://github.com/Morzomb/All-jellyfin-media-server/tree/fr)**
 
-## Table of contents
+## Table of contents :
 
 - [What is Isyrr for?](#what-is-isyrr-for)
   - [Jellyfin](#jellyfin)
