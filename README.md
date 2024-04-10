@@ -33,6 +33,7 @@ Bienvenue dans le référentiel All-jellyfin-media-server ! Ce référentiel con
   - [Docker](#docker)
   - [NVidia](#nvidia)
   - [VPN](#vpn)
+    - [Test du VPN](#troubleshoot-vpn)
 - [Installation](#installation)
   - [Basic Installation](#installation-de-base)
   - [Installation avec NVidia](#installation-avec-nvidia-uniquement)
@@ -268,6 +269,24 @@ Tout d'abord, vous devez vous connecter au site Web de Nord VPN.
 <div style="text-align: center">
     <img src="image/vpn3.png">
 </div>
+
+### Troubleshoot VPN 
+
+Une fois le Docker lancé, vous pourrez tester votre VPN avec la commande suivante :
+
+```bash
+docker exec qbittorrent curl -s https://api.ipify.org/
+# Résultat
+94.101.115.63
+```
+
+De mon côté, il m'affiche une adresse IP en Belgique :
+
+<div style="text-align: center">
+    <img src="image/vpn4.png">
+</div>
+
+---
 
 # Installation
 
