@@ -4,7 +4,7 @@
     <img src="image/Isyrr.png">
 </div>
 
-Welcome to the All-jellyfin-media-server Repository! This repository contains everything you need to create your own Jellyfin media server with Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent, and Gluetun (Nord VPN) in a Docker Compose setup. We'll refer to the compilation of all containers as **Isyrr** to keep it simple.
+Welcome to the All-jellyfin-media-server Repository! This repository contains everything you need to create your own Jellyfin media server with Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent, and Gluetun (VPN) in a Docker Compose setup. We'll refer to the compilation of all containers as **Isyrr** to keep it simple.
 
 ![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg)
 ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg)
@@ -28,11 +28,11 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [Jackett](#jackett)
   - [Flaresolverr](#flaresolverr)
   - [QBittorrent](#qbittorrent)
-  - [Gluetun with Nord VPN](#gluetun-nordvpn)
+  - [Gluetun (VPN)](#gluetun-vpn)
 - [Prerequisites](#prerequisites)
   - [Using Docker](#docker)
   - [NVidia](#nvidia)
-  - [NordVPN](#vpn)
+  - [VPN](#vpn)
 - [Installation](#installation)
   - [Basic Installation](#basic-installation)
   - [Installation with NVidia](#installation-with-nvidia-only)
@@ -118,9 +118,9 @@ To use Docker Compose, make sure Docker is installed on your system.
     <img src="https://a.fsdn.com/allura/p/qbittorrent/icon?1518743661?&w=90" width="100" height="100">
 </div>
 
-### Gluetun (NordVPN)
+### Gluetun (VPN)
 
-[Gluetun](https://github.com/qdm12/gluetun) is open-source VPN client software that allows you to connect to NordVPN servers. It is easy to use and supports many advanced features such as port forwarding, DNS leak protection, and support for multiple VPN protocols.
+[Gluetun](https://github.com/qdm12/gluetun) is open-source VPN client software that allows you to connect to VPN servers. It is easy to use and supports many advanced features such as port forwarding, DNS leak protection, and support for multiple VPN protocols.
 
 <div style="text-align: center">
   <img src="https://raw.githubusercontent.com/qdm12/gluetun/master/title.svg" width="300" height="200"> <img src="https://m.media-amazon.com/images/I/31o0QB0R0sL.png" width="200" height="200">
@@ -242,7 +242,9 @@ cd nvidia-patch
 
 ## VPN 
 
-Now we will see how to set up the VPN (Nord VPN). First, you need to connect to the Nord VPN website.
+Now we will see how to set up the VPN. Personally, I will use NordVPN, but you can find a number of other VPN providers as well [HERE](https://github.com/qdm12/gluetun-wiki/tree/main/setup/providers).
+
+First, you need to connect to the Nord VPN website.
 
 1. Go to Nord VPN services :
 
