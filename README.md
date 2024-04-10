@@ -4,7 +4,7 @@
     <img src="image/Isyrr.png">
 </div>
 
-Bienvenue dans le référentiel All-jellyfin-media-server ! Ce référentiel contient tout ce dont vous avez besoin pour créer votre propre serveur multimédia Jellyfin avec Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent et Gluetun (Nord VPN) dans une configuration Docker Compose. Nous désignerons la compilation de tous les conteneurs sous le nom **Isyrr** pour simplifier.
+Bienvenue dans le référentiel All-jellyfin-media-server ! Ce référentiel contient tout ce dont vous avez besoin pour créer votre propre serveur multimédia Jellyfin avec Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent et Gluetun (VPN) dans une configuration Docker Compose. Nous désignerons la compilation de tous les conteneurs sous le nom **Isyrr** pour simplifier.
 
 ![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg)
 ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg)
@@ -28,11 +28,11 @@ Bienvenue dans le référentiel All-jellyfin-media-server ! Ce référentiel con
   - [Jackett](#jackett)
   - [Flaresolverr](#flaresolverr)
   - [QBittorrent](#qbittorrent)
-  - [Gluetun avec Nord VPN](#gluetun-nordvpn)
+  - [Gluetun (VPN)](#gluetun-vpn)
 - [Prérequis](#prérequis)
   - [Docker](#docker)
   - [NVidia](#nvidia)
-  - [NordVPN](#vpn)
+  - [VPN](#vpn)
 - [Installation](#installation)
   - [Basic Installation](#installation-de-base)
   - [Installation avec NVidia](#installation-avec-nvidia-uniquement)
@@ -118,9 +118,9 @@ Pour utiliser Docker Compose, assurez-vous d'avoir Docker installé sur votre sy
     <img src="https://a.fsdn.com/allura/p/qbittorrent/icon?1518743661?&w=90" width="100" height="100">
 </div>
 
-### Gluetun (NordVPN)
+### Gluetun (VPN)
 
-[Gluetun](https://github.com/qdm12/gluetun) est un logiciel client VPN open-source qui vous permet de vous connecter aux serveurs NordVPN. Il est facile à utiliser et prend en charge de nombreuses fonctionnalités avancées telles que le transfert de port, la protection contre les fuites DNS et la prise en charge de plusieurs protocoles VPN.
+[Gluetun](https://github.com/qdm12/gluetun) est un logiciel client VPN open-source qui vous permet de vous connecter aux serveurs VPN. Il est facile à utiliser et prend en charge de nombreuses fonctionnalités avancées telles que le transfert de port, la protection contre les fuites DNS et la prise en charge de plusieurs protocoles VPN.
 
 <div style="text-align: center">
   <img src="https://raw.githubusercontent.com/qdm12/gluetun/master/title.svg" width="300" height="200"> <img src="https://m.media-amazon.com/images/I/31o0QB0R0sL.png" width="200" height="200">
@@ -247,7 +247,9 @@ cd nvidia-patch
 
 ## VPN 
 
-Maintenant, nous allons voir comment configurer le VPN (Nord VPN). Tout d'abord, vous devez vous connecter au site Web de Nord VPN.
+Maintenant, nous allons voir comment configurer le VPN. Personnellement, j'utiliserai NordVPN, mais vous pouvez trouver la configuration pour de nombreux autres fournisseurs [VPN ICI](https://github.com/qdm12/gluetun-wiki/tree/main/setup/providers).
+
+Tout d'abord, vous devez vous connecter au site Web de Nord VPN. 
 
 1. Go to Nord VPN services :
 
