@@ -1,38 +1,23 @@
 ---
 version: "3.3"
 services:
-  nordvpn:
-    container_name: GlueTun-VPN
-    image: qmcgaw/gluetun
-    cap_add:
-      - NET_ADMIN
-    ports:
-      - 8080:8080
-      - 51420:51420
-      - 51420:51420/udp
-    environment:
-      - VPN_SERVICE_PROVIDER=nordvpn
-      - OPENVPN_USER=${OPENVPN_USER}
-      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
-      - SERVER_REGIONS=Belgium
-      - VPN_TYPE=openvpn
-    restart: always
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
-    network_mode: service:nordvpn
     container_name: qbittorrent
-    depends_on:
-      - nordvpn
     environment:
       - WEBUI_PORT=8080
       - PUID=0
       - PGID=0
       - TZ=${TZ}
-      - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
+      # - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
     volumes:
       - ${COMMON_PATH}:${COMMON_PATH}
       - ${COMMON_PATH}/configs/qbittorrent:/config
       - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
     restart: unless-stopped
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -42,6 +27,8 @@ services:
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=${TZ}
+      #- LANG=fr_FR
+      #- LANG=en_US
     ports:
       - 8191:8191
     restart: unless-stopped
