@@ -8,7 +8,6 @@ Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout c
 
 ![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg)
 ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg)
-![](https://img.shields.io/github/tag/Morzomb/All-jellyfin-media-server.svg)
 ![](https://img.shields.io/github/release/Morzomb/All-jellyfin-media-server.svg) 
 ![](https://img.shields.io/github/issues/Morzomb/All-jellyfin-media-server.svg)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Morzomb/All-jellyfin-media-server.svg)](https://github.com/Morzomb/All-jellyfin-media-server/commits/master)
