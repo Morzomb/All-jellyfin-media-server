@@ -4,6 +4,7 @@
     <img src="image/Isyrr.png" style="margin: 15px 10px;">
 </div>
 
+
 Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout ce dont vous avez besoin pour créer votre propre serveur média Jellyfin avec Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent et Gluetun (VPN) dans une configuration Docker Compose. Nous désignerons l’ensemble de ces conteneurs sous le nom **Isyrr** pour simplifier.
 
 ![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg)
