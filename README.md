@@ -4,11 +4,11 @@
     <img src="image/Isyrr.png" style="margin: 15px 10px;">
 </div>
 
+
 Welcome to the All-jellyfin-media-server Repository! This repository contains everything you need to create your own Jellyfin media server with Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent, and Gluetun (VPN) in a Docker Compose setup. We'll refer to the compilation of all containers as **Isyrr** to keep it simple.
 
 ![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg)
 ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg)
-![](https://img.shields.io/github/tag/Morzomb/All-jellyfin-media-server.svg)
 ![](https://img.shields.io/github/release/Morzomb/All-jellyfin-media-server.svg) 
 ![](https://img.shields.io/github/issues/Morzomb/All-jellyfin-media-server.svg)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Morzomb/All-jellyfin-media-server.svg)](https://github.com/Morzomb/All-jellyfin-media-server/commits/master)
@@ -54,11 +54,11 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [**Radarr**](#radarr-1)
     - [**Media Management**](#media-management)
     - [**Download Clients**](#download-clients)
-    - [**Indexer Jackett**](#indexer-jackett)
+    - [**Indexer Jackett (Optional)**](#indexer-jackett-optional)
   - [**Sonarr**](#sonarr-1)
     - [**Media Management**](#media-management-1)
     - [**Download Clients**](#download-clients-1)
-    - [**Indexer Jackett**](#indexer-jackett-1)
+    - [**Indexer Jackett (Optional)**](#indexer-jackett-optional-1)
   - [**Prowlarr**](#prowlarr-1)
     - [**Configure Torrent Indexers**](#configure-torrent-indexers)
     - [**Configure FlareSolverr**](#configure-flaresolverr)
@@ -733,7 +733,7 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
     <img src="image/radarr/rad5.png" style="margin: 15px 10px;">
 </div>
 
-### **Indexer Jackett**
+### **Indexer Jackett (Optional)**
 
 1. In the WebUI, go to **Settings** > **Indexers**.
 2. Click **+** under **Add Indexer**, then select **Torznab**.
@@ -781,7 +781,7 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
     <img src="image/sonarr/son2.png" style="margin: 15px 10px;">
 </div>
 
-### **Indexer Jackett**
+### **Indexer Jackett (Optional)**
 
 1. In the WebUI, go to **Settings** > **Indexers**.
 2. Click **+** under **Add Indexer**, then select **Torznab**.
