@@ -54,11 +54,11 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [**Radarr**](#radarr-1)
     - [**Media Management**](#media-management)
     - [**Download Clients**](#download-clients)
-    - [**Indexer Jackett**](#indexer-jackett)
+    - [**Indexer Jackett (Optional)**](#indexer-jackett-optional)
   - [**Sonarr**](#sonarr-1)
     - [**Media Management**](#media-management-1)
     - [**Download Clients**](#download-clients-1)
-    - [**Indexer Jackett**](#indexer-jackett-1)
+    - [**Indexer Jackett (Optional)**](#indexer-jackett-optional-1)
   - [**Prowlarr**](#prowlarr-1)
     - [**Configure Torrent Indexers**](#configure-torrent-indexers)
     - [**Configure FlareSolverr**](#configure-flaresolverr)
@@ -733,7 +733,7 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
     <img src="image/radarr/rad5.png" style="margin: 15px 10px;">
 </div>
 
-### **Indexer Jackett**
+### **Indexer Jackett (Optional)**
 
 1. In the WebUI, go to **Settings** > **Indexers**.
 2. Click **+** under **Add Indexer**, then select **Torznab**.
@@ -781,7 +781,7 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
     <img src="image/sonarr/son2.png" style="margin: 15px 10px;">
 </div>
 
-### **Indexer Jackett**
+### **Indexer Jackett (Optional)**
 
 1. In the WebUI, go to **Settings** > **Indexers**.
 2. Click **+** under **Add Indexer**, then select **Torznab**.
