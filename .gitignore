@@ -1,4 +1,5 @@
 .gitignore
+.git
 
 # /image
 # .env
