@@ -18,10 +18,10 @@ Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout c
 > [!NOTE] 
 > **Access the repository in [English](README.md)**
 
-## **Table des matières :**
+## **Table des matières**
 
 - [**All-jellyfin-media-server**](#all-jellyfin-media-server)
-  - [**Table des matières :**](#table-des-matières-)
+  - [**Table des matières :**](#table-des-matières)
   - [**À quoi sert Isyrr ?**](#à-quoi-sert-isyrr-)
     - [**Jellyfin**](#jellyfin)
     - [**Jellyseerr**](#jellyseerr)
@@ -212,7 +212,7 @@ Pour arrêter la stack :
 docker-compose down
 ```
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ## **NVIDIA**
 
@@ -353,7 +353,7 @@ root@pve:~#nvidia-smi
 +-----------------------------------------------------------------------------+
 ```
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ## **Deuxième méthode**
 
@@ -485,7 +485,7 @@ cd nvidia-patch
 > ```
 > Si des fichiers résiduels restent, recherchez-les en utilisant `apt search nvidia-driver`
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 # **VPN**
 
@@ -556,7 +556,7 @@ De mon côté, cela m'affiche une adresse IP en Belgique :
     <img src="image/vpn/vpn4.png" style="margin: 15px 10px;">
 </div>
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
@@ -638,7 +638,7 @@ docker compose -f docker-compose-<YOUR_VPN>-vpn.yaml up -d
 ```
 [Go to the file here](compose_files/VPN/)
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 # **Accéder aux Applications**
 
@@ -709,7 +709,7 @@ Gluetun (Nord VPN) sera automatiquement configuré pour être utilisé avec les 
     <img src="image/qBittorrent/qbit5.png" style="margin: 15px 10px;">
 </div>
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
@@ -757,7 +757,7 @@ Gluetun (Nord VPN) sera automatiquement configuré pour être utilisé avec les 
     <img src="image/sonarr/son3.png" style="margin: 15px 10px;">
 </div>
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
@@ -805,7 +805,7 @@ Gluetun (Nord VPN) sera automatiquement configuré pour être utilisé avec les 
     <img src="image/sonarr/son3.png" style="margin: 15px 10px;">
 </div>
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
@@ -864,7 +864,7 @@ Gluetun (Nord VPN) sera automatiquement configuré pour être utilisé avec les 
     <img src="image/prowlarr/pro3.png" style="margin: 15px 10px;">
 </div>
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
@@ -906,7 +906,7 @@ Si vous souhaitez que d'autres utilisateurs aient accès à votre serveur Jellyf
 4. Cliquez sur **Sauvegarder** pour créer l'utilisateur.
 5. Répétez ce processus pour tous les utilisateurs que vous souhaitez ajouter au serveur.
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
@@ -947,7 +947,7 @@ Si vous souhaitez que d'autres utilisateurs aient accès à votre serveur Jellyf
 3. Cliquez sur **Tester** pour vérifier la connexion.
 4. Cliquez sur **Sauvegarder les modifications**.
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
@@ -962,7 +962,7 @@ docker image prune -a
 
 Ensuite, vous pouvez exécuter `docker-compose up -d` pour redémarrer les conteneurs avec les dernières versions des applications.
 
-**[`^        retour au sommaire        ^`](#table-of-contents)**
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 # **Avertissement**
 
