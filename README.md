@@ -18,7 +18,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
 > [!NOTE] 
 > **Acceder au repository en [Français](README-fr.md)**
 
-## **Table of contents :**
+## **Table of contents**
 
 - [**All-jellyfin-media-server**](#all-jellyfin-media-server)
   - [**Table of contents :**](#table-of-contents-)
