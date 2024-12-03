@@ -28,8 +28,12 @@ services:
       - UPDATER_PERIOD=24h
     restart: always
     volumes:
-      - ${COMMON_PATH}:${COMMON_PATH}
-      - ${COMMON_PATH}/gluetun:/tmp/gluetun
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}
+        target:${COMMON_PATH}
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/gluetun
+        target:/tmp/gluetun
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     network_mode: service:gluetun
@@ -43,9 +47,15 @@ services:
       - TZ=${TZ}
       #- DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
     volumes:
-      - ${COMMON_PATH}:${COMMON_PATH}
-      - ${COMMON_PATH}/configs/qbittorrent:/config
-      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}
+        target:${COMMON_PATH}
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/configs/qbittorrent
+        target:/config 
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/qbittorrent/downloads
+        target:/downloads
     restart: unless-stopped
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -68,7 +78,9 @@ services:
       - PGID=0
       - TZ=${TZ}
     volumes:
-      - ${COMMON_PATH}/configs/prowlarr:/config
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/configs/prowlarr
+        target:/config
     ports:
       - 9696:9696
     restart: unless-stopped
@@ -80,7 +92,9 @@ services:
       - PGID=0
       - TZ=${TZ}
     volumes:
-      - ${COMMON_PATH}/configs/jackett:/config
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/configs/jackett
+        target:/config
     ports:
       - 9117:9117
     restart: unless-stopped
@@ -92,10 +106,18 @@ services:
       - PGID=0
       - TZ=${TZ}
     volumes:
-      - ${COMMON_PATH}:${COMMON_PATH}
-      - ${COMMON_PATH}/configs/sonarr:/config
-      - ${COMMON_PATH}/sonarr/tv:/tv
-      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}
+        target:${COMMON_PATH}
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/configs/sonarr
+        target:/config 
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/sonarr/tv
+        target:/tv
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/qbittorrent/downloads
+        target:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -107,10 +129,18 @@ services:
       - PGID=0
       - TZ=${TZ}
     volumes:
-      - ${COMMON_PATH}:${COMMON_PATH}
-      - ${COMMON_PATH}/configs/radarr:/config
-      - ${COMMON_PATH}/radarr/movies:/movies
-      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}
+        target:${COMMON_PATH}
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/configs/radarr
+        target:/config 
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/radarr/movies
+        target:/movies
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/qbittorrent/downloads
+        target:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -128,12 +158,24 @@ services:
       - 7359:7359/udp
       - 1900:1900/udp
     volumes:
-      - ${COMMON_PATH}:${COMMON_PATH}
-      - ${COMMON_PATH}/configs/jellyfin:/config
-      - ${COMMON_PATH}/jellyfin/cache:/cache
-      - ${COMMON_PATH}/sonarr/tv:/data/tvshows
-      - ${COMMON_PATH}/radarr/movies:/data/movies
-      - ${COMMON_PATH}/qbittorrent/downloads:/data/media_downloads
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}
+        target:${COMMON_PATH}
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/configs/jellyfin
+        target:/config 
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/jellyfin/cache
+        target:/cache
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/sonarr/tv
+        target:/media/tv
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/radarr/movies
+        target:/media/movies
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/qbittorrent/downloads
+        target:/media/downloads
     restart: unless-stopped
     deploy:
       resources:
@@ -152,5 +194,7 @@ services:
     ports:
       - 5055:5055
     volumes:
-      - ${COMMON_PATH}/configs/jellyseerr:/app/config
+      - type:bind
+        source:/dockerhdd/${COMMON_PATH}/configs/jellyseerr
+        target:/app/config 
     restart: unless-stopped
