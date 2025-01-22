@@ -123,8 +123,8 @@ services:
     container_name: jellyfin-console
     build:
       context: .
-      args:
-        HOST_IP: ${HOST_IP}
+    environment:
+      - HOST_IP=${HOST_IP}
     ports:
-        - 2022:80
+      - 2022:80
     restart: unless-stopped
