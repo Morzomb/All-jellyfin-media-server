@@ -85,6 +85,13 @@ Isyrr uses Docker and Docker Compose to deploy the services. Docker Compose file
 
 ---
 
+### **Jellyfin Console**
+
+[Jellyfin Console](https://github.com/AnthonyGress/jellyfin-console) is an open-source user interface made specifically for managing these related services from a single, unified web management console. 
+<div style="text-align: center">
+    <img width="707" alt="jellyfin-console" src="https://private-user-images.githubusercontent.com/70029654/405484959-18cb497b-8295-488e-95a1-4b7aef0ded56.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzc1MjQwMDksIm5iZiI6MTczNzUyMzcwOSwicGF0aCI6Ii83MDAyOTY1NC80MDU0ODQ5NTktMThjYjQ5N2ItODI5NS00ODhlLTk1YTEtNGI3YWVmMGRlZDU2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAxMjIlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMTIyVDA1MjgyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTI2NDM2YmFhMzY2Y2I4OTU0NWE5NWNjNjI3NjMyNzM5ODczZjdmMzlkYTgwYzg4ZjAzODYzMGNlNWM3OTY3NzQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.nWY2MkqD5mzTlYCjzC3OEbpTbr5Sp3Qn_YaZHq7v81c" />
+</div>
+
 ### **Jellyfin**
 
 [Jellyfin](https://jellyfin.org/) is an open-source media server software that allows you to stream your movies, TV shows, music, and eBooks to all your devices. It is compatible with many types of media files and supports streaming to numerous devices.
@@ -568,6 +575,7 @@ Before proceeding, navigate to the `.env` file located in the `compose_files/` d
 # BASE
 COMMON_PATH=/YOUR_PATH/Isyrr
 TZ=Europe/Paris
+HOST_IP=192.168.x.x # Your server ip address goes here
 
 # Uncomment the lines below to enable the corresponding VPN configuration
 
@@ -637,7 +645,9 @@ Once the applications are deployed, you can access them using the following addr
 > Replace `localhost` with the IP address of your machine or remote server if needed.
 
 
+* Console : http://localhost:2022
 * Jellyfin : http://localhost:8096
+* Jellyseer : http://localhost:5055
 * Sonarr : http://localhost:8989
 * Radarr : http://localhost:7878
 * Jackett : http://localhost:9117
