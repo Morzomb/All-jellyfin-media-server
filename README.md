@@ -734,7 +734,7 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
     <img src="image/radarr/rad5.png" style="margin: 15px 10px;">
 </div>
 
-    *Note: Occasionally, Radarr may complain that the `/downloads/radarr` directory does not exist inside the container (this is generally flagged as an error by Radarr in  **System** > **Status**). To fix this, simply move into the directory `/COMMON_PATH/qbittorrent/downloads` (using the command `cd /COMMON_PATH/qbittorrent/downloads`) and create the "radarr" directory with this command: `mkdir radarr`*
+_Note: Radarr may complain that the `/downloads/radarr` directory does not exist inside the container (this is generally flagged as an error by Radarr in  **System** > **Status**). To fix this, simply move into the directory `/COMMON_PATH/qbittorrent/downloads` (using the command `cd /COMMON_PATH/qbittorrent/downloads`) and create the "radarr" directory with this command: `mkdir radarr`_
 
 ### **Indexer Jackett (Optional)**
 
