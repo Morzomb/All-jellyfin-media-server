@@ -615,9 +615,24 @@ docker compose -f docker-compose-nvidia.yaml up -d
 ## **3. Installation with NVIDIA and VPN**
 
 > [!WARNING]  
-> If you use this method, fill in the `.env` file located in `compose_files/VPN`.
+> If you use this method, fill in the `.env` file located in `compose_files/VPN-nvidia`.
 
 Standard installation with both `VPN` and `NVIDIA`:
+
+To start the installation, execute :
+
+```bash
+cd compose_files/VPN-nvidia/
+docker compose -f docker-compose-<YOUR_VPN>-vpn.yaml up -d
+```
+[Go to the file here](compose_files/VPN-nvidia/)
+
+## **4. Installation with VPN (no NVIDIA)**
+
+> [!WARNING]  
+> If you use this method, fill in the `.env` file located in `compose_files/VPN`.
+
+Standard installation with a `VPN`:
 
 To start the installation, execute :
 
@@ -737,7 +752,7 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
 _Note: if entering `qbittorrent` as the Host does not work, try entering the IP address instead (ex: `192.168.x.x`)_
 
 > [!WARNING]
-> Radarr may complain that the `/downloads/radarr` directory does not exist inside the container (this is generally flagged as an error by Radarr in  **System** > **Status**). To fix this, simply move into the directory `/COMMON_PATH/qbittorrent/downloads` and manually create the `radarr` directory.
+> On new installations, Radarr may complain that the `/downloads/radarr` directory does not exist inside the container (this is generally flagged as an error by Radarr in  **System** > **Status**). To fix this, simply move into the directory `/COMMON_PATH/qbittorrent/downloads` and manually create the `radarr` directory. Then, simply delete qBittorrent from Radarr and re-add it -  you should see the error disappear.
 
 ### **Indexer Jackett (Optional)**
 
