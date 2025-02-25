@@ -638,6 +638,7 @@ Once the applications are deployed, you can access them using the following addr
 
 
 * Jellyfin : http://localhost:8096
+* Jellyseer : http://localhost:5055
 * Sonarr : http://localhost:8989
 * Radarr : http://localhost:7878
 * Jackett : http://localhost:9117
@@ -663,7 +664,7 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
     <img src="image/qBittorrent/qbit1.png" style="margin: 15px 10px;">
 </div>
 
-   *Note: The default credentials may have changed, please check the documentation for updates on this.*
+   *Note: The default credentials may have changed, please check the documentation for updates on this. In most cases, qBittorrent Web UI will generate a temporary password when the container is started. To view this password, check the logs for this container with the command: `docker logs qbittorrent`*
 
 1. Once logged in, click the gear icon to go to **Options**.
 2. Under the **Downloads** tab, configure the backup settings as follows:
@@ -732,6 +733,8 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
 <div style="text-align: center">
     <img src="image/radarr/rad5.png" style="margin: 15px 10px;">
 </div>
+
+    *Note: Occasionally, Radarr may complain that the `/downloads/radarr` directory does not exist inside the container (this is generally flagged as an error by Radarr in  **System** > **Status**). To fix this, simply move into the directory `/COMMON_PATH/qbittorrent/downloads` (using the command `cd /COMMON_PATH/qbittorrent/downloads`) and create the "radarr" directory with this command: `mkdir radarr`*
 
 ### **Indexer Jackett (Optional)**
 
