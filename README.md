@@ -47,6 +47,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [**1. Basic Installation**](#1-basic-installation)
   - [**2. Installation with NVIDIA Only**](#2-installation-with-nvidia-only)
   - [**3. Installation with NVIDIA and VPN**](#3-installation-with-nvidia-and-vpn)
+  - [**4. Installation with VPN (no NVIDIA)**](#4-installation-with-vpn-no-NVIDIA)
 - [**Accessing Applications**](#accessing-applications)
 - [**Configuration Guide for Web Interfaces Only**](#configuration-guide-for-web-interfaces-only)
   - [**qBittorrent**](#qbittorrent-1)
