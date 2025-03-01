@@ -21,7 +21,7 @@ Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout c
 ## **Table des matières**
 
 - [**All-jellyfin-media-server**](#all-jellyfin-media-server)
-  - [**Table des matières :**](#table-des-matières)
+  - [**Table des matières**](#table-des-matières)
   - [**À quoi sert Isyrr ?**](#à-quoi-sert-isyrr-)
     - [**Jellyfin**](#jellyfin)
     - [**Jellyseerr**](#jellyseerr)
@@ -47,6 +47,7 @@ Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout c
   - [**1. Installation de base**](#1-installation-de-base)
   - [**2. Installation avec uniquement NVIDIA**](#2-installation-avec-uniquement-nvidia)
   - [**3. Installation avec NVIDIA et VPN**](#3-installation-avec-nvidia-et-vpn)
+  - [**4. Installation avec VPN (sans NVIDIA)**](#4-installation-avec-vpn-sans-nvidia)
 - [**Accéder aux Applications**](#accéder-aux-applications)
 - [**Guide de Configuration pour les Interfaces Web uniquement**](#guide-de-configuration-pour-les-interfaces-web-uniquement)
   - [**qBittorrent**](#qbittorrent-1)
@@ -626,9 +627,25 @@ docker compose -f docker-compose-nvidia.yaml up -d
 ## **3. Installation avec NVIDIA et VPN**
 
 > [!WARNING]  
-> Si vous utilisez cette méthode, remplissez le fichier `.env` situé dans `compose_files/VPN`.
+> Si vous utilisez cette méthode, remplissez le fichier `.env` situé dans `compose_files/VPN-Nvidia`.
 
 Installation standard avec à la fois `VPN` et `NVIDIA` :
+
+Pour commencer l'installation, exécutez :
+
+```bash
+cd compose_files/VPN-nvidia/
+docker compose -f docker-compose-<YOUR_VPN>-vpn.yaml up -d
+```
+
+[Aller au fichier ici](compose_files/VPN-Nvidia/)
+
+## **4. Installation avec VPN (sans NVIDIA)**
+
+> [!WARNING]  
+> Si vous utilisez cette méthode, remplissez le fichier `.env` situé dans `compose_files/VPN`.
+> 
+Installation standard avec un `VPN` :
 
 Pour commencer l'installation, exécutez :
 
@@ -636,7 +653,7 @@ Pour commencer l'installation, exécutez :
 cd compose_files/VPN/
 docker compose -f docker-compose-<YOUR_VPN>-vpn.yaml up -d
 ```
-[Go to the file here](compose_files/VPN/)
+[Aller au fichier ici](compose_files/VPN-Only/)
 
 **[`^        retour au sommaire        ^`](#table-des-matières)**
 
@@ -648,6 +665,7 @@ Une fois les applications déployées, vous pouvez y accéder via les adresses s
 > Remplacez `localhost` par l'adresse IP de votre machine ou serveur distant si nécessaire.
 
 * Jellyfin : http://localhost:8096
+* Jellyseer : http://localhost:5055
 * Sonarr : http://localhost:8989
 * Radarr : http://localhost:7878
 * Jackett : http://localhost:9117
@@ -672,7 +690,7 @@ Gluetun (Nord VPN) sera automatiquement configuré pour être utilisé avec les 
     <img src="image/qBittorrent/qbit1.png" style="margin: 15px 10px;">
 </div>
 
-   *Remarque : Les identifiants par défaut peuvent avoir changé, veuillez consulter la documentation pour toute mise à jour à ce sujet.*
+   *Remarque : Les identifiants par défaut peuvent avoir changé. Veuillez consulter la documentation pour les mises à jour à ce sujet. Dans la plupart des cas, l'interface Web de qBittorrent générera un mot de passe temporaire au démarrage du conteneur. Pour afficher ce mot de passe, consultez les journaux de ce conteneur avec la commande : `docker logs qbittorrent`*
 
 3. Une fois connecté, cliquez sur l'icône d'engrenage pour accéder aux **Options**.
 4. Sous l'onglet **Téléchargements**, configurez les paramètres de sauvegarde comme suit :
@@ -742,6 +760,13 @@ Gluetun (Nord VPN) sera automatiquement configuré pour être utilisé avec les 
     <img src="image/radarr/rad5.png" style="margin: 15px 10px;">
 </div>
 
+_Note: if entering qbittorrent as the Host does not work, try entering the IP addressinstead (ex: 192.168.x.x)_
+
+>[!WARNING]
+>Lors des nouvelles installations, Radarr peut signaler que le répertoire `/downloads/radarr` n'existe pas dans le conteneur (cela est généralement indiqué comme une erreur par Radarr dans **Système** > **Statut**).
+>
+>Pour corriger cela, accédez simplement au répertoire `/COMMON_PATH/qbittorrent/downloads` et créez manuellement le dossier radarr. Ensuite, supprimez qBittorrent de Radarr et ajoutez-le à nouveau, l'erreur devrait disparaître.
+>
 ### **Indexer Jackett (Optionnelle)**
 
 1. Dans l'interface Web, allez dans **Paramètres** > **Indexeurs**.
@@ -772,6 +797,8 @@ Gluetun (Nord VPN) sera automatiquement configuré pour être utilisé avec les 
 <div style="text-align: center">
     <img src="image/sonarr/son1.png" style="margin: 15px 10px;">
 </div>
+
+_Remarque : si l'utilisation de `qbittorrent` comme hôte ne fonctionne pas, essayez d'entrer l'adresse IP à la place (ex :`192.168.x.x`)_
 
 ### **Clients de Téléchargement**
 
