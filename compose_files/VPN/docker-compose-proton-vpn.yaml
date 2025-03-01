@@ -135,14 +135,6 @@ services:
       - ${COMMON_PATH}/radarr/movies:/data/movies
       - ${COMMON_PATH}/qbittorrent/downloads:/data/media_downloads
     restart: unless-stopped
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities:
-                - gpu
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
