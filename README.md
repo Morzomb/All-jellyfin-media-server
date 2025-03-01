@@ -21,7 +21,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
 ## **Table of contents**
 
 - [**All-jellyfin-media-server**](#all-jellyfin-media-server)
-  - [**Table of contents :**](#table-of-contents-)
+  - [**Table of contents**](#table-of-contents)
   - [**What is Isyrr for?**](#what-is-isyrr-for)
     - [**Jellyfin**](#jellyfin)
     - [**Jellyseerr**](#jellyseerr)
@@ -47,6 +47,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [**1. Basic Installation**](#1-basic-installation)
   - [**2. Installation with NVIDIA Only**](#2-installation-with-nvidia-only)
   - [**3. Installation with NVIDIA and VPN**](#3-installation-with-nvidia-and-vpn)
+  - [**4. Installation with VPN (no-Nvidia)**](#4-installation-with-vpn-no-nvidia)
 - [**Accessing Applications**](#accessing-applications)
 - [**Configuration Guide for Web Interfaces Only**](#configuration-guide-for-web-interfaces-only)
   - [**qBittorrent**](#qbittorrent-1)
@@ -615,9 +616,24 @@ docker compose -f docker-compose-nvidia.yaml up -d
 ## **3. Installation with NVIDIA and VPN**
 
 > [!WARNING]  
-> If you use this method, fill in the `.env` file located in `compose_files/VPN`.
+> If you use this method, fill in the `.env` file located in `compose_files/VPN-nvidia`.
 
 Standard installation with both `VPN` and `NVIDIA`:
+
+To start the installation, execute :
+
+```bash
+cd compose_files/VPN-nvidia/
+docker compose -f docker-compose-<YOUR_VPN>-vpn.yaml up -d
+```
+[Go to the file here](compose_files/VPN-Nvidia/)
+
+## **4. Installation with VPN (no-Nvidia)**
+
+> [!WARNING]  
+> If you use this method, fill in the `.env` file located in `compose_files/VPN`.
+
+Standard installation with a `VPN`:
 
 To start the installation, execute :
 
@@ -625,7 +641,7 @@ To start the installation, execute :
 cd compose_files/VPN/
 docker compose -f docker-compose-<YOUR_VPN>-vpn.yaml up -d
 ```
-[Go to the file here](compose_files/VPN/)
+[Go to the file here](compose_files/VPN-Only/)
 
 **[`^        back to top        ^`](#table-of-contents)**
 
@@ -638,6 +654,7 @@ Once the applications are deployed, you can access them using the following addr
 
 
 * Jellyfin : http://localhost:8096
+* Jellyseer : http://localhost:5055
 * Sonarr : http://localhost:8989
 * Radarr : http://localhost:7878
 * Jackett : http://localhost:9117
@@ -663,7 +680,7 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
     <img src="image/qBittorrent/qbit1.png" style="margin: 15px 10px;">
 </div>
 
-   *Note: The default credentials may have changed, please check the documentation for updates on this.*
+   *Note: The default credentials may have changed, please check the documentation for updates on this. In most cases, qBittorrent Web UI will generate a temporary password when the container is started. To view this password, check the logs for this container with the command: `docker logs qbittorrent`*
 
 1. Once logged in, click the gear icon to go to **Options**.
 2. Under the **Downloads** tab, configure the backup settings as follows:
@@ -733,6 +750,11 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
     <img src="image/radarr/rad5.png" style="margin: 15px 10px;">
 </div>
 
+_Note: if entering `qbittorrent` as the Host does not work, try entering the IP address instead (ex: `192.168.x.x`)_
+
+> [!WARNING]
+> On new installations, Radarr may complain that the `/downloads/radarr` directory does not exist inside the container (this is generally flagged as an error by Radarr in  **System** > **Status**). To fix this, simply move into the directory `/COMMON_PATH/qbittorrent/downloads` and manually create the `radarr` directory. Then, simply delete qBittorrent from Radarr and re-add it -  you should see the error disappear.
+
 ### **Indexer Jackett (Optional)**
 
 1. In the WebUI, go to **Settings** > **Indexers**.
@@ -763,6 +785,8 @@ Gluetun (Nord VPN) will be automatically configured to be used with the applicat
 <div style="text-align: center">
     <img src="image/sonarr/son1.png" style="margin: 15px 10px;">
 </div>
+
+_Note: if entering `qbittorrent` as the Host does not work, try entering the IP address instead (ex: `192.168.x.x`)_
 
 ### **Download Clients**
 
