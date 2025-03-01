@@ -21,7 +21,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
 ## **Table of contents**
 
 - [**All-jellyfin-media-server**](#all-jellyfin-media-server)
-  - [**Table of contents :**](#table-of-contents-)
+  - [**Table of contents**](#table-of-contents)
   - [**What is Isyrr for?**](#what-is-isyrr-for)
     - [**Jellyfin**](#jellyfin)
     - [**Jellyseerr**](#jellyseerr)
@@ -47,7 +47,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [**1. Basic Installation**](#1-basic-installation)
   - [**2. Installation with NVIDIA Only**](#2-installation-with-nvidia-only)
   - [**3. Installation with NVIDIA and VPN**](#3-installation-with-nvidia-and-vpn)
-  - [**4. Installation with VPN (no NVIDIA)**](#4-installation-with-vpn-no-NVIDIA)
+  - [**4. Installation with VPN (no-Nvidia)**](#4-installation-with-vpn-no-nvidia)
 - [**Accessing Applications**](#accessing-applications)
 - [**Configuration Guide for Web Interfaces Only**](#configuration-guide-for-web-interfaces-only)
   - [**qBittorrent**](#qbittorrent-1)
@@ -626,9 +626,9 @@ To start the installation, execute :
 cd compose_files/VPN-nvidia/
 docker compose -f docker-compose-<YOUR_VPN>-vpn.yaml up -d
 ```
-[Go to the file here](compose_files/VPN-nvidia/)
+[Go to the file here](compose_files/VPN-Nvidia/)
 
-## **4. Installation with VPN (no NVIDIA)**
+## **4. Installation with VPN (no-Nvidia)**
 
 > [!WARNING]  
 > If you use this method, fill in the `.env` file located in `compose_files/VPN`.
@@ -641,7 +641,7 @@ To start the installation, execute :
 cd compose_files/VPN/
 docker compose -f docker-compose-<YOUR_VPN>-vpn.yaml up -d
 ```
-[Go to the file here](compose_files/VPN/)
+[Go to the file here](compose_files/VPN-Only/)
 
 **[`^        back to top        ^`](#table-of-contents)**
 
