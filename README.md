@@ -5,7 +5,7 @@
 </div>
 
 
-Welcome to the All-jellyfin-media-server Repository! This repository contains everything you need to create your own Jellyfin media server with Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent, and Gluetun (VPN) in a Docker Compose setup. We'll refer to the compilation of all containers as **Isyrr** to keep it simple.
+Welcome to the All-jellyfin-media-server Repository! This repository contains everything you need to create your own Jellyfin media server with Sonarr, Radarr, Jellyseerr, Prowlarr, Jackett, qBittorrent, Bazarr, and Gluetun (VPN) in a Docker Compose setup. We'll refer to the compilation of all containers as **Isyrr** to keep it simple.
 
 ![](https://img.shields.io/github/stars/Morzomb/All-jellyfin-media-server.svg)
 ![](https://img.shields.io/github/forks/Morzomb/All-jellyfin-media-server.svg)
@@ -31,6 +31,7 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
     - [**Flaresolverr**](#flaresolverr)
     - [**Prowlarr**](#prowlarr)
     - [**qBittorrent**](#qbittorrent)
+    - [**Bazarr**](#bazarr)
     - [**Gluetun (VPN)**](#gluetun-vpn)
 - [**Prerequisites**](#prerequisites)
   - [**Docker**](#docker)
@@ -72,6 +73,13 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
     - [**Sign In / Configuration**](#sign-in--configuration)
     - [**Integrating with Radarr**](#integrating-with-radarr)
     - [**Integrating with Sonarr**](#integrating-with-sonarr)
+  - [**Bazarr**](#bazarr-1)
+    - [**Initial Setup**](#initial-setup-1)
+    - [**Configure Sonarr Integration**](#configure-sonarr-integration)
+    - [**Configure Radarr Integration**](#configure-radarr-integration)
+    - [**Configure Subtitle Providers**](#configure-subtitle-providers)
+    - [**Configure Languages**](#configure-languages)
+    - [**Configure Subtitles**](#configure-subtitles)
 - [**Updating Applications**](#updating-applications)
 - [**Disclaimer**](#disclaimer)
 
@@ -149,6 +157,14 @@ Isyrr uses Docker and Docker Compose to deploy the services. Docker Compose file
 
 <div style="text-align: center">
     <img src="https://a.fsdn.com/allura/p/qbittorrent/icon?1518743661?&w=90" width="100" height="100" style="margin: 15px 10px;">
+</div>
+
+### **Bazarr**
+
+[Bazarr](https://www.bazarr.media/) is a companion application to Sonarr and Radarr that manages and downloads subtitles based on your requirements. It uses the video files stored by Sonarr and Radarr to search and download subtitles in the language(s) of your choice. Bazarr supports over 60 languages and integrates seamlessly with your existing media management workflow.
+
+<div style="text-align: center">
+    <img src="https://www.bazarr.media/assets/img/logo.png" width="200" height="100" style="margin: 15px 10px;">
 </div>
 
 ### **Gluetun (VPN)**
@@ -660,6 +676,7 @@ Once the applications are deployed, you can access them using the following addr
 * Jackett : http://localhost:9117
 * Prowlarr : http://localhost:9696
 * qBittorrent : http://localhost:8080
+* Bazarr : http://localhost:6767
 
 Gluetun (Nord VPN) will be automatically configured to be used with the applications.
 
@@ -961,6 +978,102 @@ If you want other users to access your Jellyfin server, you can create additiona
    - **API Key**: Find the API key in the Sonarr interface under **Settings** > **General** > **API Key**.
 3. Click **Test** to check the connection.
 4. Click **Save Changes**.
+
+**[`^        back to top        ^`](#table-of-contents)**
+
+---
+
+## **Bazarr**
+
+### **Initial Setup**
+
+1. Open the WebUI by navigating to `http://localhost:6767` (or replace `localhost` with your server's IP address).
+2. The setup wizard will guide you through the initial configuration:
+   - **Language**: Select your preferred language and click **Next**.
+   - **Authentication**: Configure authentication if desired (optional for local access).
+   - **General Settings**: Configure your general preferences.
+3. Click **Next** and then **Save**.
+
+> [!NOTE]  
+> **Path Configuration**: Since you're using the provided Docker Compose files, all directory paths and volume mappings are already configured correctly. Bazarr will automatically detect your Sonarr and Radarr libraries without needing manual path configuration.
+
+### **Configure Sonarr Integration**
+
+1. Go to **Settings** > **Sonarr**.
+2. Click **Add** and fill in the following information:
+   - **Name**: `Sonarr`
+   - **Enabled**: Check this box
+   - **Address**: `http://sonarr`
+   - **Port**: `8989`
+   - **Base URL**: Leave empty
+   - **API Key**: Find the API key in the Sonarr interface under **Settings** > **General** > **API Key**.
+   - **Minimum Score**: Set according to your preference (recommended: 70-80)
+3. Click **Test** to verify the connection.
+4. Click **OK** to save.
+
+### **Configure Radarr Integration**
+
+1. Go to **Settings** > **Radarr**.
+2. Click **Add** and fill in the following information:
+   - **Name**: `Radarr`
+   - **Enabled**: Check this box
+   - **Address**: `http://radarr`
+   - **Port**: `7878`
+   - **Base URL**: Leave empty
+   - **API Key**: Find the API key in the Radarr interface under **Settings** > **General** > **API Key**.
+   - **Minimum Score**: Set according to your preference (recommended: 70-80)
+3. Click **Test** to verify the connection.
+4. Click **OK** to save.
+
+### **Configure Subtitle Providers**
+
+1. Go to **Settings** > **Providers**.
+2. Add your preferred subtitle providers by clicking **Add** and selecting from available providers. Based on community recommendations, here are the most effective providers:
+
+**Recommended Free Providers (No Account Required):**
+   - **TVSubtitles**: Excellent for TV shows, no registration needed
+   - **YIFYSubtitles**: Great for movies, no registration needed
+   - **SuperSubtitles**: Good general provider, no registration needed
+   - **EmbeddedSubtitles**: Extracts subtitles from video files
+   - **AnimeTosho**: Specialized for anime content
+
+**Recommended Providers (Free Account Required):**
+   - **OpenSubtitles.com**: Free account required, much better than the old .org version
+   - **Addic7ed**: Free account required, excellent for TV shows
+
+> [!IMPORTANT]  
+> **Note about OpenSubtitles**: The old opensubtitles.org now requires a VIP subscription and is no longer recommended for free users. Use **opensubtitles.com** instead, which offers free accounts with good download limits.
+
+3. For providers requiring authentication:
+   - **OpenSubtitles.com**: Register at opensubtitles.com and use your username/password
+   - **Addic7ed**: Register at addic7ed.com and use your username/password
+4. Configure each provider according to your preferences and authentication requirements.
+5. Click **Save**.
+
+> [!TIP]  
+> Many users report achieving 99% subtitle coverage for movies and 90% for TV episodes using this combination of providers. 
+> *Provider recommendations based on community feedback from [r/bazarr](https://www.reddit.com/r/bazarr/comments/1fevojd/the_best_unlimited_provider/)*
+
+### **Configure Languages**
+
+1. Go to **Settings** > **Languages**.
+2. Select your preferred languages for subtitles:
+   - **Languages Filter**: Add the languages you want subtitles for
+   - **Default Enabled**: Check the box for languages you want enabled by default
+   - **Series**: Configure language preferences for TV series
+   - **Movies**: Configure language preferences for movies
+3. Click **Save**.
+
+### **Configure Subtitles**
+
+1. Go to **Settings** > **Subtitles**.
+2. Configure your subtitle preferences:
+   - **Download**: Set when to search for subtitles (recommended: Manually and when subtitles are wanted)
+   - **Subtitle Folder**: Configure how subtitles should be stored (recommended: Alongside media file)
+   - **Upgrade Subtitles**: Enable if you want Bazarr to replace existing subtitles with better ones
+3. Click **Save**.
+
+Once configured, Bazarr will automatically monitor your Sonarr and Radarr libraries and download subtitles based on your configured preferences.
 
 **[`^        back to top        ^`](#table-of-contents)**
 
