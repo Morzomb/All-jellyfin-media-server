@@ -44,6 +44,10 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [**PROTON**](#proton)
   - [**Troubleshoot VPN**](#troubleshoot-vpn)
 - [**Installation**](#installation)
+  - [**🚀 Automatic Installation (Recommended)**](#-automatic-installation-recommended)
+    - [**Prerequisites**](#prerequisites-1)
+    - [**Setup Script Menu**](#setup-script-menu)
+  - [**Manual Installation**](#manual-installation)
   - [**1. Basic Installation**](#1-basic-installation)
   - [**2. Installation with NVIDIA Only**](#2-installation-with-nvidia-only)
   - [**3. Installation with NVIDIA and VPN**](#3-installation-with-nvidia-and-vpn)
@@ -554,7 +558,46 @@ On my side, it shows me an IP address in Belgium :
 
 # **Installation**
 
-First, clone the repository :
+## **🚀 Automatic Installation (Recommended)**
+
+Move to your home directory, paste the command below, then follow the prompts (do NOT run as root, the script will prompt for sudo):
+
+```bash
+wget https://raw.githubusercontent.com/Morzomb/All-jellyfin-media-server/Main/setup.sh && chmod +x setup.sh && ./setup.sh
+```
+
+### **Prerequisites**
+
+📋 You will need:
+
+- **Supported OS**: Debian 12+, Ubuntu LTS 22.x or 24.x, or Raspbian
+- **Hardware**: Minimum 4 CPU cores and 8GB RAM (16GB recommended for 4K transcoding)
+- **Network**: Open TCP ports 8096 (Jellyfin), 5055 (Jellyseerr), 8989 (Sonarr), 7878 (Radarr), 9696 (Prowlarr), 9117 (Jackett), 8080 (qBittorrent)
+- **Software**: Docker & Docker Compose installed, `wget` and `sudo` packages
+- **GPU** (optional): NVIDIA GPU with drivers installed for hardware transcoding (Offer 3 only)
+- **VPN** (optional): NordVPN or ProtonVPN account credentials for secure downloads
+
+### **Setup Script Menu**
+
+🔧 The main `setup.sh` script guides the installation with the following steps:
+
+1. **System Detection** - Detects your OS and local IP address for accessing services
+2. **Container Management** - If Isyrr containers exist, choose to update or remove them
+3. **Service Selection** - Pick your preferred offer:
+   - **Offer 1 (Standard)**: Jellyfin + Arr suite without VPN
+   - **Offer 2 (Secure)**: Add VPN protection (choose NordVPN or ProtonVPN)
+   - **Offer 3 (Ultimate)**: Full suite + VPN + NVIDIA GPU acceleration
+4. **VPN Configuration** (if selected) - Input your VPN credentials and server preferences
+5. **Environment Setup** - Configure data path, timezone, and user permissions (PUID/PGID)
+6. **Directory Creation** - Automatic setup of all config and media directories
+7. **Docker Deployment** - Download and launch all containers with optimized settings
+8. **Service Access** - Displays all service URLs and access information
+
+---
+
+## **Manual Installation**
+
+Alternatively, you can clone and manage the repository manually:
 
 ```bash
 git clone https://github.com/Morzomb/All-jellyfin-media-server.git

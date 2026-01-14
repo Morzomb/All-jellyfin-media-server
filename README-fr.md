@@ -563,7 +563,46 @@ De mon côté, cela m'affiche une adresse IP en Belgique :
 
 # **Installation**
 
-Tout d'abord, clonez le dépôt :
+## **🚀 Installation Automatique (Recommandée)**
+
+Déplacez-vous dans votre répertoire personnel, collez la commande ci-dessous, puis suivez les invites (n'exécutez PAS en tant que root, le script demandera sudo si nécessaire) :
+
+```bash
+wget https://raw.githubusercontent.com/Morzomb/All-jellyfin-media-server/Main/setup.sh && chmod +x setup.sh && ./setup.sh
+```
+
+### **Prérequis**
+
+📋 Vous aurez besoin de :
+
+- **Système d'exploitation supporté** : Debian 12+, Ubuntu LTS 22.x ou 24.x, ou Raspbian
+- **Matériel** : Minimum 4 cœurs de CPU et 8 Go de RAM (16 Go recommandés pour le transcodage 4K)
+- **Réseau** : Ports TCP ouverts 8096 (Jellyfin), 5055 (Jellyseerr), 8989 (Sonarr), 7878 (Radarr), 9696 (Prowlarr), 9117 (Jackett), 8080 (qBittorrent)
+- **Logiciels** : Docker & Docker Compose installés, paquets `wget` et `sudo`
+- **GPU** (optionnel) : GPU NVIDIA avec pilotes installés pour le transcodage matériel (Offre 3 uniquement)
+- **VPN** (optionnel) : Identifiants de compte NordVPN ou ProtonVPN pour les téléchargements sécurisés
+
+### **Menu du Script d'Installation**
+
+🔧 Le script principal `setup.sh` guide l'installation avec les étapes suivantes :
+
+1. **Détection du système** - Détecte votre OS et adresse IP locale pour accéder aux services
+2. **Gestion des conteneurs** - Si des conteneurs Isyrr existent, choisissez de les mettre à jour ou de les supprimer
+3. **Sélection des services** - Choisissez votre offre préférée :
+   - **Offre 1 (Standard)** : Jellyfin + suite Arr sans VPN
+   - **Offre 2 (Sécurisée)** : Ajouter la protection VPN (NordVPN ou ProtonVPN)
+   - **Offre 3 (Ultime)** : Suite complète + VPN + accélération GPU NVIDIA
+4. **Configuration du VPN** (si sélectionné) - Entrez vos identifiants VPN et préférences de serveur
+5. **Configuration de l'environnement** - Configurez le chemin des données, le fuseau horaire et les permissions utilisateur (PUID/PGID)
+6. **Création des répertoires** - Configuration automatique de tous les répertoires de configuration et de médias
+7. **Déploiement Docker** - Télécharge et lance tous les conteneurs avec des paramètres optimisés
+8. **Accès aux services** - Affiche toutes les URLs de service et les informations d'accès
+
+---
+
+## **Installation Manuelle**
+
+Alternativement, vous pouvez cloner et gérer le dépôt manuellement :
 
 ```bash
 git clone https://github.com/Morzomb/All-jellyfin-media-server.git
