@@ -31,6 +31,7 @@ Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout c
     - [**Flaresolverr**](#flaresolverr)
     - [**Prowlarr**](#prowlarr)
     - [**qBittorrent**](#qbittorrent)
+    - [**Bazarr**](#bazarr)
     - [**Gluetun (VPN)**](#gluetun-vpn)
 - [**Prérequis**](#prérequis)
   - [**Docker**](#docker)
@@ -44,6 +45,10 @@ Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout c
   - [**PROTON**](#proton)
   - [**Dépannage VPN**](#dépannage-vpn)
 - [**Installation**](#installation)
+  - [**🚀 Installation Automatique (Recommandée)**](#-installation-automatique-recommandée)
+    - [**Prérequis**](#prérequis-1)
+    - [**Menu du Script d'Installation**](#menu-du-script-dinstallation)
+  - [**Installation Manuelle**](#installation-manuelle)
   - [**1. Installation de base**](#1-installation-de-base)
   - [**2. Installation avec uniquement NVIDIA**](#2-installation-avec-uniquement-nvidia)
   - [**3. Installation avec NVIDIA et VPN**](#3-installation-avec-nvidia-et-vpn)
@@ -72,6 +77,13 @@ Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout c
     - [**Connexion / Configuration**](#connexion--configuration)
     - [**Intégration avec Radarr**](#intégration-avec-radarr)
     - [**Intégration avec Sonarr**](#intégration-avec-sonarr)
+  - [**Bazarr**](#bazarr-1)
+    - [**Configuration Initiale**](#configuration-initiale-1)
+    - [**Configurer l'Intégration Sonarr**](#configurer-lintégration-sonarr)
+    - [**Configurer l'Intégration Radarr**](#configurer-lintégration-radarr)
+    - [**Configurer les Fournisseurs de Sous-titres**](#configurer-les-fournisseurs-de-sous-titres)
+    - [**Configurer les Langues**](#configurer-les-langues)
+    - [**Configurer les Sous-titres**](#configurer-les-sous-titres)
 - [**Mise à jour des applications**](#mise-à-jour-des-applications)
 - [**Avertissement**](#avertissement)
 
@@ -148,6 +160,14 @@ Isyrr utilise Docker et Docker Compose pour déployer les services. Les fichiers
 
 <div style="text-align: center">
     <img src="https://a.fsdn.com/allura/p/qbittorrent/icon?1518743661?&w=90" width="100" height="100" style="margin: 15px 10px;">
+</div>
+
+### **Bazarr**
+
+[Bazarr](https://www.bazarr.media/) est une application complémentaire à Sonarr et Radarr qui gère et télécharge les sous-titres en fonction de vos préférences. Il utilise les fichiers vidéo stockés par Sonarr et Radarr pour rechercher et télécharger les sous-titres dans la/les langue(s) de votre choix. Bazarr supporte plus de 60 langues et s'intègre parfaitement à votre flux de travail de gestion des médias existant.
+
+<div style="text-align: center">
+    <img src="https://www.bazarr.media/assets/img/logo.png" width="200" height="100" style="margin: 15px 10px;">
 </div>
 
 ### **Gluetun (VPN)**
@@ -1012,6 +1032,102 @@ Si vous souhaitez que d'autres utilisateurs aient accès à votre serveur Jellyf
    - **Clé API** : Trouvez la clé API dans l'interface Sonarr sous **Paramètres** > **Général** > **Clé API**.
 3. Cliquez sur **Tester** pour vérifier la connexion.
 4. Cliquez sur **Sauvegarder les modifications**.
+
+**[`^        back to top        ^`](#table-of-contents)**
+
+---
+
+## **Bazarr**
+
+### **Configuration Initiale**
+
+1. Ouvrez l'interface Web en naviguant vers `http://localhost:6767` (ou remplacez `localhost` par l'adresse IP de votre serveur).
+2. L'assistant de configuration vous guidera dans la configuration initiale :
+   - **Langue** : Sélectionnez votre langue préférée et cliquez sur **Suivant**.
+   - **Authentification** : Configurez l'authentification si désiré (optionnel pour l'accès local).
+   - **Paramètres Généraux** : Configurez vos préférences générales.
+3. Cliquez sur **Suivant** puis sur **Enregistrer**.
+
+> [!NOTE]  
+> **Configuration des chemins** : Puisque vous utilisez les fichiers Docker Compose fournis, tous les chemins de répertoires et les mappages de volumes sont déjà configurés correctement. Bazarr détectera automatiquement vos bibliothèques Sonarr et Radarr sans avoir besoin de configuration manuelle des chemins.
+
+### **Configurer l'Intégration Sonarr**
+
+1. Allez dans **Paramètres** > **Sonarr**.
+2. Cliquez sur **Ajouter** et remplissez les informations suivantes :
+   - **Nom** : `Sonarr`
+   - **Activé** : Cochez cette case
+   - **Adresse** : `http://sonarr`
+   - **Port** : `8989`
+   - **URL de base** : Laissez vide
+   - **Clé API** : Trouvez la clé API dans l'interface Sonarr sous **Paramètres** > **Général** > **Clé API**.
+   - **Score minimum** : Configurez selon votre préférence (recommandé : 70-80)
+3. Cliquez sur **Tester** pour vérifier la connexion.
+4. Cliquez sur **OK** pour enregistrer.
+
+### **Configurer l'Intégration Radarr**
+
+1. Allez dans **Paramètres** > **Radarr**.
+2. Cliquez sur **Ajouter** et remplissez les informations suivantes :
+   - **Nom** : `Radarr`
+   - **Activé** : Cochez cette case
+   - **Adresse** : `http://radarr`
+   - **Port** : `7878`
+   - **URL de base** : Laissez vide
+   - **Clé API** : Trouvez la clé API dans l'interface Radarr sous **Paramètres** > **Général** > **Clé API**.
+   - **Score minimum** : Configurez selon votre préférence (recommandé : 70-80)
+3. Cliquez sur **Tester** pour vérifier la connexion.
+4. Cliquez sur **OK** pour enregistrer.
+
+### **Configurer les Fournisseurs de Sous-titres**
+
+1. Allez dans **Paramètres** > **Fournisseurs**.
+2. Ajoutez vos fournisseurs de sous-titres préférés en cliquant sur **Ajouter** et en sélectionnant parmi les fournisseurs disponibles. Basé sur les recommandations de la communauté, voici les fournisseurs les plus efficaces :
+
+**Fournisseurs Gratuits Recommandés (Pas de compte requis) :**
+   - **TVSubtitles** : Excellent pour les séries TV, pas d'inscription nécessaire
+   - **YIFYSubtitles** : Excellent pour les films, pas d'inscription nécessaire
+   - **SuperSubtitles** : Bon fournisseur général, pas d'inscription nécessaire
+   - **EmbeddedSubtitles** : Extrait les sous-titres des fichiers vidéo
+   - **AnimeTosho** : Spécialisé pour le contenu anime
+
+**Fournisseurs Recommandés (Compte gratuit requis) :**
+   - **OpenSubtitles.com** : Compte gratuit requis, bien meilleur que l'ancienne version .org
+   - **Addic7ed** : Compte gratuit requis, excellent pour les séries TV
+
+> [!IMPORTANT]  
+> **Note sur OpenSubtitles** : L'ancien opensubtitles.org nécessite maintenant un abonnement VIP et n'est plus recommandé pour les utilisateurs gratuits. Utilisez **opensubtitles.com** à la place, qui offre des comptes gratuits avec de bons plafonds de téléchargement.
+
+3. Pour les fournisseurs nécessitant une authentification :
+   - **OpenSubtitles.com** : Inscrivez-vous sur opensubtitles.com et utilisez votre nom d'utilisateur/mot de passe
+   - **Addic7ed** : Inscrivez-vous sur addic7ed.com et utilisez votre nom d'utilisateur/mot de passe
+4. Configurez chaque fournisseur selon vos préférences et exigences d'authentification.
+5. Cliquez sur **Enregistrer**.
+
+> [!TIP]  
+> De nombreux utilisateurs rapportent une couverture de 99 % des sous-titres pour les films et 90 % pour les épisodes de télévision en utilisant cette combinaison de fournisseurs. 
+> *Recommandations de fournisseurs basées sur les commentaires de la communauté de [r/bazarr](https://www.reddit.com/r/bazarr/comments/1fevojd/the_best_unlimited_provider/)*
+
+### **Configurer les Langues**
+
+1. Allez dans **Paramètres** > **Langues**.
+2. Sélectionnez vos langues préférées pour les sous-titres :
+   - **Filtre de langues** : Ajoutez les langues pour lesquelles vous voulez des sous-titres
+   - **Activé par défaut** : Cochez la case pour les langues que vous voulez activées par défaut
+   - **Séries** : Configurez les préférences de langue pour les séries TV
+   - **Films** : Configurez les préférences de langue pour les films
+3. Cliquez sur **Enregistrer**.
+
+### **Configurer les Sous-titres**
+
+1. Allez dans **Paramètres** > **Sous-titres**.
+2. Configurez vos préférences de sous-titres :
+   - **Télécharger** : Définissez quand rechercher les sous-titres (recommandé : Manuellement et quand des sous-titres sont voulus)
+   - **Dossier des sous-titres** : Configurez comment les sous-titres doivent être stockés (recommandé : À côté du fichier média)
+   - **Mettre à niveau les sous-titres** : Activez si vous voulez que Bazarr remplace les sous-titres existants par de meilleurs
+3. Cliquez sur **Enregistrer**.
+
+Une fois configuré, Bazarr surveillera automatiquement vos bibliothèques Sonarr et Radarr et téléchargera les sous-titres selon vos préférences configurées.
 
 **[`^        retour au sommaire        ^`](#table-des-matières)**
 
