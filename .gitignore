@@ -1,5 +1,7 @@
 .gitignore
 .git
 
+setup*
+setup.sh
 # /image
 # .env
