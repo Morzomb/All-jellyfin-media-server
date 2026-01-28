@@ -80,6 +80,6 @@
           type: qbittorrent
           url: http://gluetun:8080
           username: admin
-          password: adminadmin
+          password: QBIT_TEMP_PASS
           enableLeechProgress: true
           enableLeechSize: true
