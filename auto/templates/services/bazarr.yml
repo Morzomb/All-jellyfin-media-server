@@ -8,8 +8,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}/configs/bazarr:/config
-      - ${COMMON_PATH}/movies:/movies # Accès aux films pour les sous-titres
-      - ${COMMON_PATH}/tv:/tv
+      - ${COMMON_PATH}/radarr/movies:/movies # Accès aux films pour les sous-titres
+      - ${COMMON_PATH}/sonarr/tv:/tv
     ports:
       - 6767:6767
     restart: unless-stopped
