@@ -3,8 +3,8 @@ services:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=0
+      - PGID=0
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}/configs/bazarr:/config
