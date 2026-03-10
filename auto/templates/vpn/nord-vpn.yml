@@ -1,0 +1,44 @@
+services:
+  gluetun:
+    container_name: GlueTun-VPN
+    image: qmcgaw/gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+    - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8080:8080
+      - 51820:51820
+      - 51820:51820/udp
+      - 46931:46931
+      - 46931:46931/udp
+      - 36873:36873
+      - 36873:36873/udp
+    environment:
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - SERVER_REGIONS=${SERVER_REGIONS}
+      - VPN_TYPE=openvpn
+    restart: always
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/gluetun:/tmp/gluetun
+      
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    network_mode: service:gluetun
+    container_name: qbittorrent
+    depends_on:
+      - gluetun
+    environment:
+      - WEBUI_PORT=8080
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      # - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
+    volumes:
+      - ${COMMON_PATH}:${COMMON_PATH}
+      - ${COMMON_PATH}/configs/qbittorrent:/config
+      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
+    restart: unless-stopped

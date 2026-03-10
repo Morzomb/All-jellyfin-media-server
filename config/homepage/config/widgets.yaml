@@ -1,0 +1,23 @@
+---
+- resources:
+    label: System
+    cpu: true
+    memory: true
+    uptime: true
+    refresh: 3000
+    
+
+- resources:
+    label: Stockage
+    expanded: true
+    disk: /
+
+- search:
+    provider: google
+    focus: true
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short
+      hourCycle: h23

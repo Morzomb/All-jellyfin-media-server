@@ -1,0 +1,22 @@
+---
+- Project Source:
+    - Github:
+        - icon: si-github
+          color: "#ffffff" # Blanc pur sur fond sombre
+          href: https://github.com/Morzomb/All-jellyfin-media-server/tree/Main
+
+- Documentation:
+    - Nvidia Guide:
+        - icon: si-nvidia
+          color: "#76b900" # Le vert officiel Nvidia
+          href: https://guides.hakedev.com/wiki/ubuntu/nvidia-drivers-latest/
+    - Jellyfin Doc:
+        - icon: si-jellyfin
+          color: "#00a4dc" # Le bleu officiel Jellyfin
+          href: https://jellyfin.org/docs/
+
+- Tools:
+    - Homepage:
+        - icon: si-homeassistant # Ou une autre icone de ton choix
+          href: http://{{HOMEPAGE_VAR_SERVER_IP}}:3000
+          description: Local Dashboard

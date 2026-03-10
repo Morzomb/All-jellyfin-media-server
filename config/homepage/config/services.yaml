@@ -1,0 +1,85 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services/
+
+- Media:
+    - Jellyfin:
+        icon: sh-jellyfin
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:8096 
+        description: Personal streaming server
+        container: jellyfin 
+        widget:
+          type: jellyfin
+          url: http://jellyfin:8096 
+          key: API_Key_HERE
+          enableBlocks: true
+          enableNowPlaying: true
+          enableUser: true
+          enableMediaControl: false
+          showEpisodeNumber: true
+          expandOneStreamToTwoRows: false
+          
+- Requests & Indexers:
+    - Jellyseerr:
+        icon: sh-jellyseerr
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:5055
+        description: Media requests
+        container: jellyseerr
+        widget:
+          type: jellyseerr
+          url: http://jellyseerr:5055
+          key: API_Key_HERE
+
+    - Prowlarr:
+        icon: sh-prowlarr
+        href: http://192.168.1.10:9696
+        description: Managing indexers
+        container: prowlarr
+        widget:
+          type: prowlarr
+          url: http://prowlarr:9696
+          key: API_Key_HERE
+
+    - Jackett:
+        icon: sh-jackett
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:9117
+        container: jackett
+        widget:
+          type: jackett
+          url: http://jackett:9117
+          key: API_Key_HERE
+          
+- Management:
+    - Radarr:
+        icon: sh-radarr
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:7878
+        description: Film management
+        container: radarr
+        widget:
+          type: radarr
+          url: http://radarr:7878
+          key: API_Key_HERE
+          enableQueue: true
+
+    - Sonarr:
+        icon: sh-sonarr
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:8989
+        description: Series Management
+        container: sonarr
+        widget:
+          type: sonarr
+          url: http://sonarr:8989
+          key: API_Key_HERE
+          enableQueue: true
+
+    - qBittorrent:
+        icon: sh-qbittorrent
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:8080
+        container: qbittorrent
+        widget:
+          type: qbittorrent
+          url: http://gluetun:8080
+          username: admin
+          password: QBIT_TEMP_PASS
+          enableLeechProgress: true
+          enableLeechSize: true

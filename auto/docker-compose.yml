@@ -1,52 +1,4 @@
----
-version: "3.3"
 services:
-  gluetun:
-    container_name: GlueTun-VPN
-    image: qmcgaw/gluetun
-    cap_add:
-      - NET_ADMIN
-    ports:
-      - 8080:8080
-      - 51820:51820
-      - 51820:51820/udp
-      - 46931:46931
-      - 46931:46931/udp
-    environment:
-      - VPN_SERVICE_PROVIDER=custom
-      - VPN_TYPE=wireguard
-      - VPN_ENDPOINT_IP=${ENDPOINT_IP}
-      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDR}
-      - VPN_ENDPOINT_PORT=${ENDPOINT_PORT}
-      - VPN_DNS_ADDRESS=${DNS_ADDRESS}
-      - WIREGUARD_PUBLIC_KEY=${PUBLIC_KEY}
-      - WIREGUARD_PRIVATE_KEY=${PRIVATE_KEY}
-      - VPN_PORT_FORWARDING=on
-      - VPN_PORT_FORWARDING_PROVIDER=protonvpn
-      - VPN_PORT_FORWARDING_STATUS_FILE=/tmp/gluetun/forwarded_port
-      - TZ=${TZ}
-      - UPDATER_PERIOD=24h
-    restart: always
-    volumes:
-      - ${COMMON_PATH}:${COMMON_PATH}
-      - ${COMMON_PATH}/gluetun:/tmp/gluetun
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
-    network_mode: service:gluetun
-    container_name: qbittorrent
-    depends_on:
-      - gluetun
-    environment:
-      - WEBUI_PORT=8080
-      - PUID=0
-      - PGID=0
-      - TZ=${TZ}
-      #- DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
-    volumes:
-      - ${COMMON_PATH}:${COMMON_PATH}
-      - ${COMMON_PATH}/configs/qbittorrent:/config
-      - ${COMMON_PATH}/qbittorrent/downloads:/downloads
-    restart: unless-stopped
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -145,19 +97,4 @@ services:
       - 5055:5055
     volumes:
       - ${COMMON_PATH}/configs/jellyseerr:/app/config
-    restart: unless-stopped
-  bazarr:
-    image: lscr.io/linuxserver/bazarr:latest
-    container_name: bazarr
-    environment:
-      - PUID=0
-      - PGID=0
-      - TZ=${TZ}
-    ports:
-      - 6767:6767
-    volumes:
-      - ${COMMON_PATH}:${COMMON_PATH}
-      - ${COMMON_PATH}/configs/bazarr:/config
-      - ${COMMON_PATH}/sonarr/tv:/tv
-      - ${COMMON_PATH}/radarr/movies:/movies
     restart: unless-stopped
