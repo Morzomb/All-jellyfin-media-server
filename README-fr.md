@@ -48,6 +48,16 @@ Bienvenue dans le dépôt All-jellyfin-media-server ! Ce dépôt contient tout c
   - [**🚀 Installation Automatique (Recommandée)**](#-installation-automatique-recommandée)
     - [**Prérequis**](#prérequis-1)
     - [**Menu du Script d'Installation**](#menu-du-script-dinstallation)
+    - [**Ajouter des Services Personnalisés**](#ajouter-des-services-personnalisés)
+      - [**Étape 1 : Créer le Modèle YAML du Service**](#étape-1--créer-le-modèle-yaml-du-service)
+      - [**Étape 2 : Ajouter la Sélection du Service dans setup-fr.sh**](#étape-2--ajouter-la-sélection-du-service-dans-setup-frsh)
+      - [**Étape 3 : Mettre à Jour la Génération de docker-compose**](#étape-3--mettre-à-jour-la-génération-de-docker-compose)
+      - [**Étape 4 : Créer le Dossier de Configuration**](#étape-4--créer-le-dossier-de-configuration)
+      - [**Étape 5 : Sauvegarder l'État de Configuration**](#étape-5--sauvegarder-létat-de-configuration)
+      - [**Étape 6 : Ajouter la Configuration Post-Installation (Optionnel)**](#étape-6--ajouter-la-configuration-post-installation-optionnel)
+      - [**Étape 7 : Ajouter à Tous les Fichiers Docker Compose**](#étape-7--ajouter-à-tous-les-fichiers-docker-compose)
+      - [**Étape 8 : Mettre à Jour la Documentation README**](#étape-8--mettre-à-jour-la-documentation-readme)
+      - [**Étape 9 : Tester l'Intégration**](#étape-9--tester-lintégration)
   - [**Installation Manuelle**](#installation-manuelle)
   - [**1. Installation de base**](#1-installation-de-base)
   - [**2. Installation avec uniquement NVIDIA**](#2-installation-avec-uniquement-nvidia)
@@ -617,6 +627,152 @@ De mon côté, cela m'affiche une adresse IP en Belgique :
 6. **Préconfiguration** - Déploiement des configs Homepage si demandé
 7. **Sauvegarde & Déploiement** - Enregistre la config, crée les dossiers et lance `docker compose up -d`
 8. **Post‑install (harvest)** - Option d'automatisation pour lier Jellyfin, qBittorrent, Radarr, Sonarr, Prowlarr, Bazarr
+
+**[`^        retour au sommaire        ^`](#table-des-matières)**
+
+### **Ajouter des Services Personnalisés**
+
+Vous pouvez étendre Isyrr en ajoutant des services Docker personnalisés. Voici comment intégrer un nouveau service dans la configuration automatique :
+
+#### **Étape 1 : Créer le Modèle YAML du Service**
+
+Créez un nouveau fichier YAML dans le répertoire `auto/templates/services/` (ou `auto/templates/vpn/` s'il est lié au VPN) :
+
+```bash
+cat > auto/templates/services/monservice.yml << 'EOF'
+services:
+  monservice:
+    image: monimage:latest
+    container_name: monservice
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    ports:
+      - 9999:9999
+    volumes:
+      - ${COMMON_PATH}/configs/monservice:/config
+      - ${COMMON_PATH}:/data
+    restart: unless-stopped
+EOF
+```
+
+#### **Étape 2 : Ajouter la Sélection du Service dans setup-fr.sh**
+
+Dans la section **2.5 Services Additionnels** de `setup-fr.sh` et `setup.sh`, ajoutez votre invite de service :
+
+```bash
+echo -e "${BOLD}MonService:${NC}"
+echo -e "  Description du service personnalisé"
+echo -e "  Fonctionnalités et avantages"
+echo ""
+while true; do
+    read -p "Installer MonService ? (y/n): " monservice_choice
+    case $monservice_choice in
+        [yY]*) INSTALL_MONSERVICE=true; show_success "MonService activé"; break ;;
+        [nN]*) INSTALL_MONSERVICE=false; show_warn "MonService désactivé"; break ;;
+        *) show_error "Répondez par y ou n" ;;
+    esac
+done
+```
+
+#### **Étape 3 : Mettre à Jour la Génération de docker-compose**
+
+Dans la fonction `generate_docker_command()`, ajoutez :
+
+```bash
+if [ "$INSTALL_MONSERVICE" == "true" ]; then
+    curl -sL "$REPO_BASE/templates/services/monservice.yml" -o "$COMPOSE_DL_DIR/monservice.yml"
+    CMD_ARGS="$CMD_ARGS -f $COMPOSE_DL_DIR/monservice.yml"
+fi
+```
+
+#### **Étape 4 : Créer le Dossier de Configuration**
+
+Dans la section création des répertoires, ajoutez :
+
+```bash
+[ "$INSTALL_MONSERVICE" == "true" ] && mkdir -p "$CURRENT_PATH/configs/monservice"
+```
+
+#### **Étape 5 : Sauvegarder l'État de Configuration**
+
+Mettez à jour la section de sauvegarde `.isyrr_config` pour inclure votre service :
+
+```bash
+cat > "$CONFIG_FILE" <<EOF
+PACK_TYPE="$PACK_TYPE"
+VPN_PROVIDER="$VPN_PROVIDER"
+INSTALL_HOMEPAGE="$INSTALL_HOMEPAGE"
+INSTALL_BAZARR="$INSTALL_BAZARR"
+INSTALL_MONSERVICE="$INSTALL_MONSERVICE"
+EOF
+```
+
+#### **Étape 6 : Ajouter la Configuration Post-Installation (Optionnel)**
+
+Si votre service a besoin d'extraction de clé API ou de configuration, ajoutez-le dans la **section post-installation** :
+
+```bash
+if [[ "$INSTALL_MONSERVICE" == "true" ]]; then
+    box_section "Configuration MonService"
+    
+    MONSERVICE_CONFIG="$DATA_PATH/configs/monservice/config.json"
+    
+    if [ -f "$MONSERVICE_CONFIG" ]; then
+        MONSERVICE_KEY=$(grep 'apikey:' "$MONSERVICE_CONFIG" | awk '{print $2}')
+    fi
+    
+    if [ -z "$MONSERVICE_KEY" ]; then
+        echo -e "    ${RED}[-]${NC} Clé API MonService non trouvée"
+    else
+        echo -e "    ${GREEN}[+]${NC} Clé API MonService : ${YELLOW}${MONSERVICE_KEY:0:8}...${NC}"
+    fi
+fi
+```
+
+#### **Étape 7 : Ajouter à Tous les Fichiers Docker Compose**
+
+Pour la cohérence, ajoutez votre définition de service à tous les fichiers `compose_files/docker-compose*.yaml` pour qu'il puisse être utilisé dans les installations manuelles :
+
+```yaml
+  monservice:
+    image: monimage:latest
+    container_name: monservice
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    ports:
+      - 9999:9999
+    volumes:
+      - ${COMMON_PATH}/configs/monservice:/config
+      - ${COMMON_PATH}:/data
+    restart: unless-stopped
+```
+
+#### **Étape 8 : Mettre à Jour la Documentation README**
+
+Ajoutez les informations du service dans le README principal :
+
+```markdown
+### **MonService**
+
+[MonService](https://exemple.com) est un service qui fait X, Y et Z. Description...
+
+<div style="text-align: center">
+    <img src="url-vers-logo" width="200" height="100" style="margin: 15px 10px;">
+</div>
+```
+
+#### **Étape 9 : Tester l'Intégration**
+
+1. Testez le script de configuration avec votre nouveau service
+2. Vérifiez que les fichiers Docker Compose sont valides : `docker-compose config`
+3. Vérifiez que l'extraction de clé API fonctionne correctement
+4. Vérifiez la connectivité du service après le déploiement
+
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
