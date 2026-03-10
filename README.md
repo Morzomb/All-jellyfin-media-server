@@ -48,6 +48,16 @@ Welcome to the All-jellyfin-media-server Repository! This repository contains ev
   - [**🚀 Automatic Installation (Recommended)**](#-automatic-installation-recommended)
     - [**Prerequisites**](#prerequisites-1)
     - [**Setup Script Menu**](#setup-script-menu)
+    - [**Adding Custom Services**](#adding-custom-services)
+      - [**Step 1: Create the Service YAML Template**](#step-1-create-the-service-yaml-template)
+      - [**Step 2: Add Service Configuration to setup.sh**](#step-2-add-service-configuration-to-setupsh)
+      - [**Step 3: Update docker-compose Generation**](#step-3-update-docker-compose-generation)
+      - [**Step 4: Create Configuration Folder**](#step-4-create-configuration-folder)
+      - [**Step 5: Save Configuration State**](#step-5-save-configuration-state)
+      - [**Step 6: Add Post-Install Configuration (Optional)**](#step-6-add-post-install-configuration-optional)
+      - [**Step 7: Add to All Docker Compose Files**](#step-7-add-to-all-docker-compose-files)
+      - [**Step 8: Update README Documentation**](#step-8-update-readme-documentation)
+      - [**Step 9: Test the Integration**](#step-9-test-the-integration)
   - [**Manual Installation**](#manual-installation)
   - [**1. Basic Installation**](#1-basic-installation)
   - [**2. Installation with NVIDIA Only**](#2-installation-with-nvidia-only)
@@ -615,6 +625,152 @@ chmod +x setup-fr.sh
 6. **Preconfiguration** - Deploy homepage config and assets when requested
 7. **Save & Deploy** - Writes installer config, creates directories, and runs `docker compose up -d`
 8. **Post‑install (harvest)** - Optional automated API harvest to link Jellyfin, qBittorrent, Radarr, Sonarr, Prowlarr, Bazarr
+
+**[`^        retour au sommaire        ^`](#table-des-matières)**
+
+### **Adding Custom Services**
+
+You can extend Isyrr by adding custom Docker services. Here's how to integrate a new service into the automated setup:
+
+#### **Step 1: Create the Service YAML Template**
+
+Create a new YAML file in `auto/templates/services/` directory (or `auto/templates/vpn/` if it's VPN-related):
+
+```bash
+cat > auto/templates/services/myservice.yml << 'EOF'
+services:
+  myservice:
+    image: myimage:latest
+    container_name: myservice
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    ports:
+      - 9999:9999
+    volumes:
+      - ${COMMON_PATH}/configs/myservice:/config
+      - ${COMMON_PATH}:/data
+    restart: unless-stopped
+EOF
+```
+
+#### **Step 2: Add Service Configuration to setup.sh**
+
+In the **2.5 ADDITIONAL SERVICES** section of `setup.sh` and `setup-fr.sh`, add your service prompt:
+
+```bash
+echo -e "${BOLD}MyService:${NC}"
+echo -e "  Custom service description"
+echo -e "  Features and benefits"
+echo ""
+while true; do
+    read -p "Install MyService ? (y/n): " myservice_choice
+    case $myservice_choice in
+        [yY]*) INSTALL_MYSERVICE=true; show_success "MyService enabled"; break ;;
+        [nN]*) INSTALL_MYSERVICE=false; show_warn "MyService disabled"; break ;;
+        *) show_error "Answer y or n" ;;
+    esac
+done
+```
+
+#### **Step 3: Update docker-compose Generation**
+
+In the `generate_docker_command()` function, add:
+
+```bash
+if [ "$INSTALL_MYSERVICE" == "true" ]; then
+    curl -sL "$REPO_BASE/templates/services/myservice.yml" -o "$COMPOSE_DL_DIR/myservice.yml"
+    CMD_ARGS="$CMD_ARGS -f $COMPOSE_DL_DIR/myservice.yml"
+fi
+```
+
+#### **Step 4: Create Configuration Folder**
+
+In the directories creation section, add:
+
+```bash
+[ "$INSTALL_MYSERVICE" == "true" ] && mkdir -p "$CURRENT_PATH/configs/myservice"
+```
+
+#### **Step 5: Save Configuration State**
+
+Update the `.isyrr_config` save section to include your service:
+
+```bash
+cat > "$CONFIG_FILE" <<EOF
+PACK_TYPE="$PACK_TYPE"
+VPN_PROVIDER="$VPN_PROVIDER"
+INSTALL_HOMEPAGE="$INSTALL_HOMEPAGE"
+INSTALL_BAZARR="$INSTALL_BAZARR"
+INSTALL_MYSERVICE="$INSTALL_MYSERVICE"
+EOF
+```
+
+#### **Step 6: Add Post-Install Configuration (Optional)**
+
+If your service needs API key extraction or configuration, add it in the **post-installation section**:
+
+```bash
+if [[ "$INSTALL_MYSERVICE" == "true" ]]; then
+    box_section "MyService Configuration"
+    
+    MYSERVICE_CONFIG="$DATA_PATH/configs/myservice/config.json"
+    
+    if [ -f "$MYSERVICE_CONFIG" ]; then
+        MYSERVICE_KEY=$(grep 'apikey:' "$MYSERVICE_CONFIG" | awk '{print $2}')
+    fi
+    
+    if [ -z "$MYSERVICE_KEY" ]; then
+        echo -e "    ${RED}[-]${NC} MyService API Key not found"
+    else
+        echo -e "    ${GREEN}[+]${NC} MyService API Key: ${YELLOW}${MYSERVICE_KEY:0:8}...${NC}"
+    fi
+fi
+```
+
+#### **Step 7: Add to All Docker Compose Files**
+
+For consistency, add your service definition to all `compose_files/docker-compose*.yaml` files so it can be used in manual installations:
+
+```yaml
+  myservice:
+    image: myimage:latest
+    container_name: myservice
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+    ports:
+      - 9999:9999
+    volumes:
+      - ${COMMON_PATH}/configs/myservice:/config
+      - ${COMMON_PATH}:/data
+    restart: unless-stopped
+```
+
+#### **Step 8: Update README Documentation**
+
+Add service information in the main README:
+
+```markdown
+### **MyService**
+
+[MyService](https://example.com) is a service that does X, Y, and Z. Description...
+
+<div style="text-align: center">
+    <img src="url-to-logo" width="200" height="100" style="margin: 15px 10px;">
+</div>
+```
+
+#### **Step 9: Test the Integration**
+
+1. Test the setup script with your new service
+2. Verify Docker Compose files are valid: `docker-compose config`
+3. Verify API key extraction works correctly
+4. Check service connectivity after deployment
+
+**[`^        retour au sommaire        ^`](#table-des-matières)**
 
 ---
 
