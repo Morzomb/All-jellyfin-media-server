@@ -585,11 +585,14 @@ De mon côté, cela m'affiche une adresse IP en Belgique :
 
 ## **🚀 Installation Automatique (Recommandée)**
 
-Déplacez-vous dans votre répertoire personnel, collez la commande ci-dessous, puis suivez les invites (n'exécutez PAS en tant que root, le script demandera sudo si nécessaire) :
+ Déplacez-vous dans votre dossier personnel, puis lancez le script d'installation automatique correspondant à la langue souhaitée. NE PAS exécuter en root ; le script demandera `sudo` :
 
-```bash
-wget https://raw.githubusercontent.com/Morzomb/All-jellyfin-media-server/Main/setup.sh && chmod +x setup.sh && ./setup.sh
-```
+ Installateur français :
+ ```bash
+ wget https://raw.githubusercontent.com/Morzomb/All-jellyfin-media-server/Main/setup-fr.sh -O setup-fr.sh
+ chmod +x setup-fr.sh
+ ./setup-fr.sh
+ ```
 
 ### **Prérequis**
 
@@ -604,19 +607,16 @@ wget https://raw.githubusercontent.com/Morzomb/All-jellyfin-media-server/Main/se
 
 ### **Menu du Script d'Installation**
 
-🔧 Le script principal `setup.sh` guide l'installation avec les étapes suivantes :
+🔧 Les installateurs `setupfinale.sh` (français) et `setupfinale-eng.sh` (anglais) guident l'installation complète.
 
-1. **Détection du système** - Détecte votre OS et adresse IP locale pour accéder aux services
-2. **Gestion des conteneurs** - Si des conteneurs Isyrr existent, choisissez de les mettre à jour ou de les supprimer
-3. **Sélection des services** - Choisissez votre offre préférée :
-   - **Offre 1 (Standard)** : Jellyfin + suite Arr sans VPN
-   - **Offre 2 (Sécurisée)** : Ajouter la protection VPN (NordVPN ou ProtonVPN)
-   - **Offre 3 (Ultime)** : Suite complète + VPN + accélération GPU NVIDIA
-4. **Configuration du VPN** (si sélectionné) - Entrez vos identifiants VPN et préférences de serveur
-5. **Configuration de l'environnement** - Configurez le chemin des données, le fuseau horaire et les permissions utilisateur (PUID/PGID)
-6. **Création des répertoires** - Configuration automatique de tous les répertoires de configuration et de médias
-7. **Déploiement Docker** - Télécharge et lance tous les conteneurs avec des paramètres optimisés
-8. **Accès aux services** - Affiche toutes les URLs de service et les informations d'accès
+1. **Gestion stateful** - Détecte une installation précédente et propose : Mettre à jour / Désinstaller / Modifier / Quitter
+2. **Sélection de la pile** - Choisissez Offre 1 (Standard), 2 (Sécurisée avec VPN) ou 3 (Ultime avec NVIDIA)
+3. **Services additionnels** - Activer facultativement Homepage et Bazarr
+4. **Variables d'environnement** - Configurer `COMMON_PATH`, `TZ`, `PUID`/`PGID`, `SERVER_IP` (ou conserver `.env` existant)
+5. **Configuration VPN** (si choisie) - Saisie des identifiants NordVPN (OpenVPN) ou ProtonVPN (WireGuard)
+6. **Préconfiguration** - Déploiement des configs Homepage si demandé
+7. **Sauvegarde & Déploiement** - Enregistre la config, crée les dossiers et lance `docker compose up -d`
+8. **Post‑install (harvest)** - Option d'automatisation pour lier Jellyfin, qBittorrent, Radarr, Sonarr, Prowlarr, Bazarr
 
 ---
 
