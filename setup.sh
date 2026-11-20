@@ -11,6 +11,7 @@ REPO_BASE="$REPO/auto"
 COMPOSE_DL_DIR="$DIR/compose_downloads"
 ENV_FILE="$DIR/.env"
 CONFIG_FILE="$DIR/.isyrr_config"
+SUDO=""; [ "$EUID" -ne 0 ] && SUDO="sudo"  # no sudo in root-only containers (e.g. LXC)
 
 # ANSI Colors
 BOLD='\033[1m'
@@ -225,14 +226,21 @@ if [ -f "$CONFIG_FILE" ]; then
                 if [[ "$confirm_del" =~ ^[yY] ]]; then
                     show_info "Stopping services..."
                     docker compose --env-file "$ENV_FILE" $SAVED_CMD down
+                    CONFIGS_DIR=$(grep '^COMMON_PATH=' "$ENV_FILE" | cut -d '=' -f2)
                     show_info "Removing configuration files..."
                     rm "$CONFIG_FILE"
-                    sudo rm -Rf data/ compose_downloads/ .env
-                    
-                    read -p "Also remove volumes (persistent data)? (y/n): " del_vol
-                    if [[ "$del_vol" =~ ^[yY] ]]; then
-                       show_info "Removing Docker volumes..."
-                       docker volume prune -f
+                    $SUDO rm -Rf data/ compose_downloads/ .env
+
+                    if [ -n "$CONFIGS_DIR" ] && [ -d "$CONFIGS_DIR/configs" ]; then
+                        CONFIGS_DIR="$CONFIGS_DIR/configs"
+                        show_warn "Service settings (Jellyfin users, *arr databases, API keys) are in $CONFIGS_DIR"
+                        read -p "Delete $CONFIGS_DIR? Media files are not touched (y/n): " del_cfg
+                        if [[ "$del_cfg" =~ ^[yY] ]]; then
+                            $SUDO rm -Rf "$CONFIGS_DIR"
+                            show_success "Removed $CONFIGS_DIR"
+                        else
+                            show_info "Kept $CONFIGS_DIR"
+                        fi
                     fi
                     show_success "Uninstall complete"
                 else
@@ -761,9 +769,9 @@ if [ "$DO_HARVEST" == "true" ]; then
 
     box_section "Service Configuration"
 
-    sudo mkdir -p "$DATA_PATH/qbittorrent/downloads/radarr"
-    sudo mkdir -p "$DATA_PATH/qbittorrent/downloads/sonarr"
-    sudo chmod -R 777 "$DATA_PATH/qbittorrent/downloads/"
+    $SUDO mkdir -p "$DATA_PATH/qbittorrent/downloads/radarr"
+    $SUDO mkdir -p "$DATA_PATH/qbittorrent/downloads/sonarr"
+    $SUDO chmod -R 777 "$DATA_PATH/qbittorrent/downloads/"
 
     COOKIE=$(curl -s -i --max-time 5 -X POST "http://localhost:8080/api/v2/auth/login" -d "username=admin&password=$QBIT_TEMP_PASS")
     SID=$(echo "$COOKIE" | grep -oP 'SID=\K[^;]+')
