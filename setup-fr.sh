@@ -858,8 +858,14 @@ if [ "$DO_HARVEST" == "true" ]; then
         if [[ "$EXIST_FLARE" == *"FlareSolverr"* ]]; then 
             echo -e "    ${GREEN}[+] Prowlarr${NC}: FlareSolverr ok"
         else 
-            curl -s -X POST "$PROWLARR_URL/indexerproxy?apiKey=$PROWLARR_KEY" -H "Content-Type: application/json" -d "{\"name\":\"FlareSolverr\",\"implementation\":\"FlareSolverr\",\"configContract\":\"FlareSolverrSettings\",\"tags\":[\"flaresolverr\"],\"fields\":[{\"name\":\"host\",\"value\":\"http://flaresolverr:8191/\"}]}" > /dev/null
-            echo -e "    ${GREEN}[+] Prowlarr${NC}: FlareSolverr lie"
+            # Prowlarr tags are integer ids: create (or fetch) the tag first
+            TAG_ID=$(curl -s -X POST "$PROWLARR_URL/tag?apiKey=$PROWLARR_KEY" -H "Content-Type: application/json" -d '{"label":"flaresolverr"}' | grep -oP '"id":\s*\K\d+')
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$PROWLARR_URL/indexerproxy?apiKey=$PROWLARR_KEY" -H "Content-Type: application/json" -d "{\"name\":\"FlareSolverr\",\"implementation\":\"FlareSolverr\",\"configContract\":\"FlareSolverrSettings\",\"tags\":[$TAG_ID],\"fields\":[{\"name\":\"host\",\"value\":\"http://flaresolverr:8191/\"},{\"name\":\"requestTimeout\",\"value\":60}]}")
+            if [[ "$CODE" == 2* ]]; then
+                echo -e "    ${GREEN}[+] Prowlarr${NC}: FlareSolverr lie"
+            else
+                echo -e "    ${RED}[-] Prowlarr${NC}: Echec liaison FlareSolverr (HTTP $CODE)"
+            fi
         fi
         
         EXIST_APPS=$(curl -s "$PROWLARR_URL/applications?apiKey=$PROWLARR_KEY")
