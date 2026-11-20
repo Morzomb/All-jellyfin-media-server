@@ -753,25 +753,6 @@ if [ "$DO_HARVEST" == "true" ]; then
     fi
 
     echo -e "\n${CYAN}[*] Moisson des Services${NC}"
-    QBIT_PASS=$(docker logs qbittorrent 2>&1 | grep "temporary password" | awk '{print $NF}' | tail -n 1)
-    if [ -z "$QBIT_PASS" ]; then
-        echo -e "    ${YELLOW}[!]${NC} Mot de passe qBit introuvable"
-    else
-        echo -e "    ${GREEN}[+]${NC} qBit password found"
-        sed -i "/QBIT_TEMP_PASS=/d" "$CONFIG_FILE"
-        echo "QBIT_TEMP_PASS=\"$QBIT_PASS\"" >> "$CONFIG_FILE"
-        export QBIT_TEMP_PASS="$QBIT_PASS"
-        
-        if [[ "$PACK_TYPE" == "2" || "$PACK_TYPE" == "3" ]]; then
-            QBIT_URL_HOMEPAGE="http://gluetun:8080"
-        else
-            QBIT_URL_HOMEPAGE="http://qbittorrent:8080"
-        fi
-        if [ "$INSTALL_HOMEPAGE" == "true" ] && [ -f "$HOMEPAGE_SERVICES" ]; then
-            sed -i "/qBittorrent:/,/url:/ s|url: .*|url: $QBIT_URL_HOMEPAGE/|" "$HOMEPAGE_SERVICES"
-            sed -i "/qBittorrent:/,/password:/ s/password: .*/password: $QBIT_PASS/" "$HOMEPAGE_SERVICES"
-        fi
-    fi
 
     moissonner "Radarr" "$DATA_PATH/configs/radarr/config.xml" "xml"
     moissonner "Sonarr" "$DATA_PATH/configs/sonarr/config.xml" "xml"
@@ -785,8 +766,56 @@ if [ "$DO_HARVEST" == "true" ]; then
     sudo mkdir -p "$DATA_PATH/qbittorrent/downloads/sonarr"
     sudo chmod -R 777 "$DATA_PATH/qbittorrent/downloads/"
 
-    COOKIE=$(curl -s -i --max-time 5 -X POST "http://localhost:8080/api/v2/auth/login" -d "username=admin&password=$QBIT_TEMP_PASS")
-    SID=$(echo "$COOKIE" | grep -oP 'SID=\K[^;]+')
+    if [[ "$PACK_TYPE" == "2" || "$PACK_TYPE" == "3" ]]; then QBIT_HOST="gluetun"; else QBIT_HOST="qbittorrent"; fi
+    qbit_login() { curl -s -i --max-time 5 -X POST "http://localhost:8080/api/v2/auth/login" --data-urlencode "username=admin" --data-urlencode "password=$1" | grep -oP 'SID=\K[^;]+'; }
+    SID=""
+    [ -n "$QBIT_PASS" ] && SID=$(qbit_login "$QBIT_PASS")
+    if [ -z "$SID" ]; then
+        # The temporary password changes on every container start until a permanent one is set
+        QBIT_TEMP=$(docker logs qbittorrent 2>&1 | grep "temporary password" | awk '{print $NF}' | tail -n 1)
+        [ -n "$QBIT_TEMP" ] && SID=$(qbit_login "$QBIT_TEMP")
+        if [ -n "$SID" ]; then
+            read -s -p "    Nouveau mot de passe WebUI qBittorrent pour admin (6+ car. : lettres, chiffres, . _ - ; vide = generer) : " QBIT_PASS; echo
+            until [[ "$QBIT_PASS" =~ ^[A-Za-z0-9._-]{6,}$ ]]; do
+                if [ -z "$QBIT_PASS" ]; then
+                    QBIT_PASS=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 16)
+                    echo -e "    ${YELLOW}[!]${NC} Mot de passe qBittorrent genere: ${YELLOW}$QBIT_PASS${NC}"
+                    break
+                fi
+                read -s -p "    Mot de passe invalide, recommencez : " QBIT_PASS; echo
+            done
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "http://localhost:8080/api/v2/app/setPreferences" -H "Cookie: SID=$SID" --data-urlencode "json={\"web_ui_password\":\"$QBIT_PASS\"}")
+            if [ "$CODE" == "200" ]; then
+                sed -i "/QBIT_TEMP_PASS=/d; /QBIT_PASS=/d" "$CONFIG_FILE"
+                echo "QBIT_PASS=\"$QBIT_PASS\"" >> "$CONFIG_FILE"
+                echo -e "    ${GREEN}[+]${NC} Mot de passe permanent qBittorrent defini (sauve dans .isyrr_config)"
+            else
+                echo -e "    ${RED}[-]${NC} Impossible de definir le mot de passe qBittorrent (HTTP $CODE)"
+                QBIT_PASS=""
+            fi
+        else
+            echo -e "    ${YELLOW}[!]${NC} qBittorrent : aucun mot de passe valide (sauve ou temporaire)"
+        fi
+    fi
+    if [ -n "$QBIT_PASS" ] && [ "$INSTALL_HOMEPAGE" == "true" ] && [ -f "$HOMEPAGE_SERVICES" ]; then
+        sed -i "/qBittorrent:/,/url:/ s|url: .*|url: http://$QBIT_HOST:8080|" "$HOMEPAGE_SERVICES"
+        sed -i "/qBittorrent:/,/password:/ s/password: .*/password: $QBIT_PASS/" "$HOMEPAGE_SERVICES"
+    fi
+
+    # Create or update the qBittorrent download client in Radarr/Sonarr
+    link_qbit() {
+        local APP=$1 URL=$2 KEY=$3 CAT_FIELD=$4 CAT=$5 ID CODE
+        local BODY="\"name\":\"qBittorrent\",\"enable\":true,\"implementation\":\"Qbittorrent\",\"configContract\":\"QbittorrentSettings\",\"protocol\":\"torrent\",\"priority\":1,\"fields\":[{\"name\":\"host\",\"value\":\"$QBIT_HOST\"},{\"name\":\"port\",\"value\":8080},{\"name\":\"username\",\"value\":\"admin\"},{\"name\":\"password\",\"value\":\"$QBIT_PASS\"},{\"name\":\"$CAT_FIELD\",\"value\":\"$CAT\"}]"
+        ID=$(curl -s "$URL/downloadclient?apiKey=$KEY" | tr -d '\n' | grep -oP '"name":\s*"qBittorrent".*?"id":\s*\K\d+' | head -n 1)
+        if [ -n "$ID" ]; then
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" -X PUT "$URL/downloadclient/$ID?apiKey=$KEY" -H "Content-Type: application/json" -d "{\"id\":$ID,$BODY}")
+            [[ "$CODE" == 2* ]] && echo -e "    ${GREEN}[+] $APP${NC}: qBit mis a jour" && return
+        else
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$URL/downloadclient?apiKey=$KEY" -H "Content-Type: application/json" -d "{$BODY}")
+            [[ "$CODE" == 2* ]] && echo -e "    ${GREEN}[+] $APP${NC}: qBit lie" && return
+        fi
+        echo -e "    ${RED}[-] $APP${NC}: Echec liaison qBit (HTTP $CODE)"
+    }
 
     if [ -z "$SID" ]; then 
         echo -e "${RED}[-]${NC} Impossible de se connecter a qBit"
@@ -819,13 +848,7 @@ if [ "$DO_HARVEST" == "true" ]; then
             echo -e "    ${GREEN}[+] Radarr${NC}: configure"
         fi
         
-        EXIST_R_QBIT=$(curl -s "$RADARR_URL/downloadclient?apiKey=$RADARR_KEY")
-        if [[ "$EXIST_R_QBIT" == *"qBittorrent"* ]]; then 
-            echo -e "    ${GREEN}[+] Radarr${NC}: qBit lie"
-        else 
-            curl -s -X POST "$RADARR_URL/downloadclient?apiKey=$RADARR_KEY" -H "Content-Type: application/json" -d "{\"name\":\"qBittorrent\",\"enable\":true,\"implementation\":\"Qbittorrent\",\"configContract\":\"QbittorrentSettings\",\"protocol\":\"torrent\",\"priority\":1,\"fields\":[{\"name\":\"host\",\"value\":\"qbittorrent\"},{\"name\":\"port\",\"value\":8080},{\"name\":\"username\",\"value\":\"admin\"},{\"name\":\"password\",\"value\":\"$QBIT_TEMP_PASS\"},{\"name\":\"category\",\"value\":\"radarr\"}]}" > /dev/null
-            echo -e "    ${GREEN}[+] Radarr${NC}: qBit lie"
-        fi
+        [ -n "$QBIT_PASS" ] && link_qbit "Radarr" "$RADARR_URL" "$RADARR_KEY" "movieCategory" "radarr"
     fi
 
     SONARR_URL="http://localhost:8989/api/v3"
@@ -840,13 +863,7 @@ if [ "$DO_HARVEST" == "true" ]; then
             echo -e "    ${GREEN}[+] Sonarr${NC}: configure"
         fi
         
-        EXIST_S_QBIT=$(curl -s "$SONARR_URL/downloadclient?apiKey=$SONARR_KEY")
-        if [[ "$EXIST_S_QBIT" == *"qBittorrent"* ]]; then 
-            echo -e "    ${GREEN}[+] Sonarr${NC}: qBit lie"
-        else 
-            curl -s -X POST "$SONARR_URL/downloadclient?apiKey=$SONARR_KEY" -H "Content-Type: application/json" -d "{\"name\":\"qBittorrent\",\"enable\":true,\"implementation\":\"Qbittorrent\",\"configContract\":\"QbittorrentSettings\",\"protocol\":\"torrent\",\"priority\":1,\"fields\":[{\"name\":\"host\",\"value\":\"qbittorrent\"},{\"name\":\"port\",\"value\":8080},{\"name\":\"username\",\"value\":\"admin\"},{\"name\":\"password\",\"value\":\"$QBIT_TEMP_PASS\"},{\"name\":\"category\",\"value\":\"sonarr\"}]}" > /dev/null
-            echo -e "    ${GREEN}[+] Sonarr${NC}: qBit lie"
-        fi
+        [ -n "$QBIT_PASS" ] && link_qbit "Sonarr" "$SONARR_URL" "$SONARR_KEY" "tvCategory" "sonarr"
         curl -s -X PUT "$SONARR_URL/config/mediamanagement?apiKey=$SONARR_KEY" -H "Content-Type: application/json" -d "{\"copyAndDeleteImport\": false}" > /dev/null
     fi
 
