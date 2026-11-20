@@ -10,7 +10,8 @@
         container: jellyfin 
         widget:
           type: jellyfin
-          url: http://jellyfin:8096 
+          url: http://jellyfin:8096
+          version: 2 # Jellyfin 10.12+; use 1 for older versions
           key: API_Key_HERE
           enableBlocks: true
           enableNowPlaying: true
@@ -32,7 +33,7 @@
 
     - Prowlarr:
         icon: sh-prowlarr
-        href: http://192.168.1.10:9696
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:9696
         description: Managing indexers
         container: prowlarr
         widget:
