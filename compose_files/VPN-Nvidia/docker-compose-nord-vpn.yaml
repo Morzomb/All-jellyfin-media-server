@@ -25,8 +25,8 @@ services:
       - nordvpn
     environment:
       - WEBUI_PORT=8080
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
       #- DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
     volumes:
@@ -51,8 +51,8 @@ services:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}/configs/prowlarr:/config
@@ -63,8 +63,8 @@ services:
     image: lscr.io/linuxserver/jackett:latest
     container_name: jackett
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}/configs/jackett:/config
@@ -75,8 +75,8 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}:${COMMON_PATH}
@@ -90,8 +90,8 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}:${COMMON_PATH}
@@ -105,8 +105,8 @@ services:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
       - NVIDIA_VISIBLE_DEVICES=all
     ports:
@@ -145,8 +145,8 @@ services:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
     ports:
       - 6767:6767

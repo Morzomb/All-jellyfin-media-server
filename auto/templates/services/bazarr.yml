@@ -3,8 +3,8 @@ services:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
     ports:
       - 6767:6767
