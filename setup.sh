@@ -226,14 +226,21 @@ if [ -f "$CONFIG_FILE" ]; then
                 if [[ "$confirm_del" =~ ^[yY] ]]; then
                     show_info "Stopping services..."
                     docker compose --env-file "$ENV_FILE" $SAVED_CMD down
+                    CONFIGS_DIR=$(grep '^COMMON_PATH=' "$ENV_FILE" | cut -d '=' -f2)
                     show_info "Removing configuration files..."
                     rm "$CONFIG_FILE"
                     $SUDO rm -Rf data/ compose_downloads/ .env
-                    
-                    read -p "Also remove volumes (persistent data)? (y/n): " del_vol
-                    if [[ "$del_vol" =~ ^[yY] ]]; then
-                       show_info "Removing Docker volumes..."
-                       docker volume prune -f
+
+                    if [ -n "$CONFIGS_DIR" ] && [ -d "$CONFIGS_DIR/configs" ]; then
+                        CONFIGS_DIR="$CONFIGS_DIR/configs"
+                        show_warn "Service settings (Jellyfin users, *arr databases, API keys) are in $CONFIGS_DIR"
+                        read -p "Delete $CONFIGS_DIR? Media files are not touched (y/n): " del_cfg
+                        if [[ "$del_cfg" =~ ^[yY] ]]; then
+                            $SUDO rm -Rf "$CONFIGS_DIR"
+                            show_success "Removed $CONFIGS_DIR"
+                        else
+                            show_info "Kept $CONFIGS_DIR"
+                        fi
                     fi
                     show_success "Uninstall complete"
                 else
