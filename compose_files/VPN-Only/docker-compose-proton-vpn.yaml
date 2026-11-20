@@ -136,7 +136,10 @@ services:
       - ${COMMON_PATH}/qbittorrent/downloads:/data/media_downloads
     restart: unless-stopped
   jellyseerr:
-    image: fallenbagel/jellyseerr:latest
+    # Jellyseerr is discontinued; Seerr is its successor and runs as UID 1000:
+    # chown -R 1000:1000 ${COMMON_PATH}/configs/jellyseerr
+    image: ghcr.io/seerr-team/seerr:latest
+    init: true
     container_name: jellyseerr
     environment:
       - LOG_LEVEL=debug

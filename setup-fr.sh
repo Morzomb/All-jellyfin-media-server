@@ -525,6 +525,8 @@ CURRENT_PATH=$(grep COMMON_PATH "$ENV_FILE" | cut -d '=' -f2)
 [ -z "$CURRENT_PATH" ] && CURRENT_PATH="/home/$USER/data"
 
 mkdir -p "$CURRENT_PATH/configs/"{qbittorrent,prowlarr,jackett,sonarr,radarr,jellyfin,jellyseerr,gluetun}
+# Seerr runs as UID 1000
+chown -R 1000:1000 "$CURRENT_PATH/configs/jellyseerr" 2>/dev/null || sudo chown -R 1000:1000 "$CURRENT_PATH/configs/jellyseerr"
 mkdir -p "$CURRENT_PATH/qbittorrent/downloads"
 mkdir -p "$CURRENT_PATH/sonarr/tv"
 mkdir -p "$CURRENT_PATH/radarr/movies"
