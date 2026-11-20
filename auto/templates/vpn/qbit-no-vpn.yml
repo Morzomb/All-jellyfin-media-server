@@ -4,8 +4,8 @@ services:
     container_name: qbittorrent
     environment:
       - WEBUI_PORT=8080
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID:-0}
+      - PGID=${PGID:-0}
       - TZ=${TZ}
       # - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
     volumes:
