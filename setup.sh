@@ -616,12 +616,12 @@ if [ "$DO_HARVEST" == "true" ]; then
 
     configure_jelly() {
         local NAME=$1; local TYPE=$2; local PATH_FOLDER=$3
-        EXIST_LIB=$(curl -s -H "X-Emby-Token: $JELLYFIN_KEY" "$BASE_URL/Library/VirtualFolders")
+        EXIST_LIB=$(curl -s -H "Authorization: MediaBrowser Token=\"$JELLYFIN_KEY\"" "$BASE_URL/Library/VirtualFolders")
         if [[ "$EXIST_LIB" == *"$NAME"* ]]; then 
             echo -e "    ${YELLOW}[*] Library '$NAME'${NC}: already exists"
         else 
             echo -ne "    Creating '$NAME'... "
-            curl -s -X POST "$BASE_URL/Library/VirtualFolders?name=$NAME&collectionType=$TYPE&refreshLibrary=false" -H "X-Emby-Token: $JELLYFIN_KEY" > /dev/null
+            curl -s -X POST "$BASE_URL/Library/VirtualFolders?name=$NAME&collectionType=$TYPE&refreshLibrary=false" -H "Authorization: MediaBrowser Token=\"$JELLYFIN_KEY\"" > /dev/null
             echo -e "${GREEN}[OK]${NC}"
         fi
 
@@ -629,7 +629,7 @@ if [ "$DO_HARVEST" == "true" ]; then
             echo -e "    ${YELLOW}[*] Path${NC}: already linked"
         else 
             echo -ne "    Linking path... "
-            curl -s -X POST "$BASE_URL/Library/VirtualFolders/Paths?refreshLibrary=true" -H "X-Emby-Token: $JELLYFIN_KEY" -H "Content-Type: application/json" -d "{\"Name\":\"$NAME\",\"PathInfo\":{\"Path\":\"$PATH_FOLDER\"}}" > /dev/null
+            curl -s -X POST "$BASE_URL/Library/VirtualFolders/Paths?refreshLibrary=true" -H "Authorization: MediaBrowser Token=\"$JELLYFIN_KEY\"" -H "Content-Type: application/json" -d "{\"Name\":\"$NAME\",\"PathInfo\":{\"Path\":\"$PATH_FOLDER\"}}" > /dev/null
             echo -e "${GREEN}[OK]${NC}"
         fi
     }
@@ -707,16 +707,16 @@ if [ "$DO_HARVEST" == "true" ]; then
     echo -e "\n${CYAN}[*] Jellyfin API Key${NC}"
     AUTH_DATA="{\"Username\": \"$J_USER\", \"Pw\": \"$J_PASS\"}"
     AUTH_HEADER="MediaBrowser Client=\"Isyrr-Automator\", Device=\"Server\", DeviceId=\"script-$(date +%s)\", Version=\"1.0.0\""
-    RESPONSE_AUTH=$(curl -s -X POST "$BASE_URL/Users/AuthenticateByName" -H "Content-Type: application/json" -H "X-Emby-Authorization: $AUTH_HEADER" -d "$AUTH_DATA")
+    RESPONSE_AUTH=$(curl -s -X POST "$BASE_URL/Users/AuthenticateByName" -H "Content-Type: application/json" -H "Authorization: $AUTH_HEADER" -d "$AUTH_DATA")
     SESSION_TOKEN=$(echo "$RESPONSE_AUTH" | grep -oP '"AccessToken":"\K[^" ]+')
 
     if [ ! -z "$SESSION_TOKEN" ]; then
-        LIST_KEYS=$(curl -s -X GET "$BASE_URL/Auth/Keys" -H "X-Emby-Token: $SESSION_TOKEN")
+        LIST_KEYS=$(curl -s -X GET "$BASE_URL/Auth/Keys" -H "Authorization: MediaBrowser Token=\"$SESSION_TOKEN\"")
         FINAL_KEY=$(echo "$LIST_KEYS" | sed 's/},{/\n/g' | grep "$APP_NAME" | grep -oP '"AccessToken":"\K[^"]+' | head -n 1)
         if [ -z "$FINAL_KEY" ]; then
             show_info "Creating a new key..."
-            curl -s -o /dev/null -X POST "$BASE_URL/Auth/Keys?app=$APP_NAME" -H "X-Emby-Token: $SESSION_TOKEN"
-            LIST_KEYS=$(curl -s -X GET "$BASE_URL/Auth/Keys" -H "X-Emby-Token: $SESSION_TOKEN")
+            curl -s -o /dev/null -X POST "$BASE_URL/Auth/Keys?app=$APP_NAME" -H "Authorization: MediaBrowser Token=\"$SESSION_TOKEN\""
+            LIST_KEYS=$(curl -s -X GET "$BASE_URL/Auth/Keys" -H "Authorization: MediaBrowser Token=\"$SESSION_TOKEN\"")
             FINAL_KEY=$(echo "$LIST_KEYS" | sed 's/},{/\n/g' | grep "$APP_NAME" | grep -oP '"AccessToken":"\K[^"]+' | head -n 1)
         fi
         if [ ! -z "$FINAL_KEY" ]; then
