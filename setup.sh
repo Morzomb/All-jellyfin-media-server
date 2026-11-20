@@ -11,6 +11,7 @@ REPO_BASE="$REPO/auto"
 COMPOSE_DL_DIR="$DIR/compose_downloads"
 ENV_FILE="$DIR/.env"
 CONFIG_FILE="$DIR/.isyrr_config"
+SUDO=""; [ "$EUID" -ne 0 ] && SUDO="sudo"  # no sudo in root-only containers (e.g. LXC)
 
 # ANSI Colors
 BOLD='\033[1m'
@@ -227,7 +228,7 @@ if [ -f "$CONFIG_FILE" ]; then
                     docker compose --env-file "$ENV_FILE" $SAVED_CMD down
                     show_info "Removing configuration files..."
                     rm "$CONFIG_FILE"
-                    sudo rm -Rf data/ compose_downloads/ .env
+                    $SUDO rm -Rf data/ compose_downloads/ .env
                     
                     read -p "Also remove volumes (persistent data)? (y/n): " del_vol
                     if [[ "$del_vol" =~ ^[yY] ]]; then
@@ -761,9 +762,9 @@ if [ "$DO_HARVEST" == "true" ]; then
 
     box_section "Service Configuration"
 
-    sudo mkdir -p "$DATA_PATH/qbittorrent/downloads/radarr"
-    sudo mkdir -p "$DATA_PATH/qbittorrent/downloads/sonarr"
-    sudo chmod -R 777 "$DATA_PATH/qbittorrent/downloads/"
+    $SUDO mkdir -p "$DATA_PATH/qbittorrent/downloads/radarr"
+    $SUDO mkdir -p "$DATA_PATH/qbittorrent/downloads/sonarr"
+    $SUDO chmod -R 777 "$DATA_PATH/qbittorrent/downloads/"
 
     COOKIE=$(curl -s -i --max-time 5 -X POST "http://localhost:8080/api/v2/auth/login" -d "username=admin&password=$QBIT_TEMP_PASS")
     SID=$(echo "$COOKIE" | grep -oP 'SID=\K[^;]+')
